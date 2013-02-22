@@ -37,7 +37,7 @@ You just POST it to “https://dev.foxweave.io/component“, including your apiK
 
 The following is an example using curl:
 
-    curl -T target/distributions/myfunkyapp.zip -H "Content-Type: application/zip" https://dev.foxweave.io/component/myfunkyapp?apiKey=XXXXXX
+    curl -X POST -T target/distributions/myfunkyapp.zip -H "Content-Type: application/zip" https://dev.foxweave.io/component/myfunkyapp?apiKey=XXXXXX
 
 As you've probably guessed from above, the target URL is formatted as follows:
 
@@ -46,8 +46,16 @@ As you've probably guessed from above, the target URL is formatted as follows:
 Your account API key can be found in your profile after logging into your account on FoxWeave.  Just follow "Settings->API" from the top menu bar.
 
 Note that when you upload a module to FoxWeave, it will:
+
 1. Only be visible/usable from your account i.e. other FoxWeave accounts cannot use any of the components in your module.  You will need to [get in contact with us][4] if you'd like to make the module public.
 2. Only be runnable on a [PaaS or On-Premise][1].  This is obviously for security reasons.
+
+### Updating Individual Resources
+You don't want the trouble of building and uploading a full module distribution *.zip* file every time you make a change while you are developing a module.
+To avoid this, you can simply update and then PUT individual resources.  For example, to update and PUT local changes to the *foxweave-components.json*
+module descriptor file:
+
+    curl -X PUT -T src/main/resources/foxweave-components.json -H "Content-Type: application/json" https://dev.foxweave.io/component/onepagecrm/foxweave-components.json?apiKey=XXXXXX
 
 [1]: http://www.foxweave.com/integration-runtime-options/ "Integration Task Runtime Options"
 [2]: http://www.foxweave.com/synchronization-vs-migration/ "Synchronization Vs Migration"
