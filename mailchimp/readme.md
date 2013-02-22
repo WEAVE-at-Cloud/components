@@ -3,4 +3,4 @@
 ## MailChimp API Docs
 http://apidocs.mailchimp.com/api/how-to/serializing.php
 
-[PLEASE see top level README](./).
+[PLEASE see top level README](../).
