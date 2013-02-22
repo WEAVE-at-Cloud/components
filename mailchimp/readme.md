@@ -1,0 +1,1 @@
+Docs on URL structure: http://apidocs.mailchimp.com/api/how-to/serializing.php

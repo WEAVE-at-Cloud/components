@@ -1,0 +1,38 @@
+{
+    "mappings": [
+        {
+            "from": {
+                "componentName": "salesforce:salesforce",
+                "objectName": "Contact",
+                "label": "Contact"
+            },
+            "to": {
+                "componentName": "zendesk:zendesk",
+                "objectName": "user",
+                "label": "User"
+            },
+            "model": [
+                {
+                    "from": ["FirstName", "LastName"],
+                    "to": "name",
+                    "template": "${FirstName} ${LastName}"
+                },
+                {
+                    "from": "Email",
+                    "to": "email"
+                },
+                {
+                    "from": "Phone",
+                    "to": "phone"
+                },
+                {
+                    "literal": {
+                        "label": "End User",
+                        "value": "end-user"
+                    },
+                    "to": "role"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,305 @@
+{
+    "displayName": "Zendesk",
+    "smalllogo": "ui/images/favicon.png",
+    "largelogo": "ui/images/largelogo.png",
+    "authDescriptor" : {
+        "title": "Zendesk Account",
+        "authType" : "httpBASIC",
+        "params" : {
+            "accountName": {
+                "displayIndex": 1,
+                "label" : "Account Alias",
+                "hint": "Account name/alias used to refer to the Zendesk account accessed by this set of security credentials."
+            },
+            "zendeskSubdomain": {
+                "displayIndex": 2,
+                "label" : "Zendesk Help Desk Sub-domain",
+                "hint": "The Help Desk Sub-domain name.  For example, if your Zendesk Dashboard URL is 'https://acme.zendesk.com/agent/#/dashboard', then your sub-domain should be set to 'acme'."
+            },
+            "agentEmail": {
+                "displayIndex": 3,
+                "label" : "Agent Email Address",
+                "hint": "Zendesk Agent Email Address associated with the API Token."
+            },
+            "apiToken": {
+                "displayIndex": 4,
+                "label" : "Agent API Token",
+                "type": "password",
+                "hint": "Zendesk Agent API Token. Find this in Settings > Channels > API (press the 'Manage' icon/button, located on bottom left toolbar)."
+            }
+        }
+    },
+    "dataModel": {
+        "objects": {
+            "user": {
+                "label": "User",
+                "apiDocs": "http://developer.zendesk.com/documentation/rest_api/users.html",
+                "operations": {"create":true},
+                "fields" : [
+                    {"name": "id", "label": "ID", "hint": "Automatically assigned when creating users", "provideOn": {"create": "exclude"}},
+                    {"name": "url", "label": "URL", "hint": "The API url of this user", "provideOn": {"create": "exclude"}},
+                    {"name": "name", "label": "Name", "hint": "The name of the user", "provideOn": {"create": "mandatory"}},
+                    {"name": "external_id",	"label": "External ID", "hint": "A unique id you can set on a user"},
+                    {"name": "alias",	"label": "Alias", "hint": "Agents can have an alias that is displayed to end-users"},
+                    {"name": "created_at", "label": "Created At", "hint": "The time the user was created", "provideOn": {"create": "exclude"}},
+                    {"name": "updated_at", "label": "Updated At", "hint": "The time of the last update of the user", "provideOn": {"create": "exclude"}},
+                    {"name": "active", "label": "Active", "hint": "Users that have been deleted will have the value false here", "provideOn": {"create": "exclude"},
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ]
+                    },
+                    {"name": "verified", "label": "Verified", "hint": "Zendesk has verified that this user is who he says he is",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ]
+                    },
+                    {"name": "shared", "label": "Shared", "hint": "If this user is shared from a different Zendesk, ticket sharing accounts only", "provideOn": {"create": "exclude"},
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ]
+                    },
+                    {"name": "locale_id", "label": "Locate ID", "hint": "The language identifier for this user"},
+                    {"name": "time_zone", "label": "Timezone", "hint": "The time-zone of this user"},
+                    {"name": "last_login_at", "label": "Last Login At", "hint": "A time-stamp of the last time this user logged in to Zendesk", "provideOn": {"create": "exclude"}},
+                    {"name": "email", "label": "Primary Email", "hint": "The primary email address of the user", "provideOn": {"create": "mandatory"}},
+                    {"name": "phone", "label": "Primary Phone Number", "hint": "The primary phone number of the user"},
+                    {"name": "signature", "label": "Signature", "hint": "The signature of this user. Only agents and admins can have signatures"},
+                    {"name": "details", "label": "Details", "hint": "In this field you can store any details about the user. e.g. the address"},
+                    {"name": "notes", "label": "Notes", "hint": "In this field you can store any notes you have about the user"},
+                    {"name": "organization_id", "label": "Organization ID", "hint": "The id of the organization this user is associated with"},
+                    {"name": "role", "label": "Role", "hint": "The role of the user.",
+                        "values": [
+                            {"value": "end-user", "label": "End User"},
+                            {"value": "agent", "label": "Agent"},
+                            {"value": "admin", "label": "Administrator"}
+                        ],
+                        "provideOn": {"create": "mandatory"}
+                    },
+                    {"name": "custom_role_id", "label": "Custom Role ID", "hint": "A custom role on the user if the user is an agent on the enterprise plan"},
+                    {"name": "moderator", "label": "Moderator", "hint": "Designates whether this user has forum moderation capabilities",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ]
+                    },
+                    {"name": "ticket_restriction", "label": "Ticket Restriction", "hint": "Specified which tickets this user has access to.",
+                        "values": [
+                            {"value": "organization", "label": "Organization"},
+                            {"value": "groups", "label": "Groups"},
+                            {"value": "assigned", "label": "Assigned"},
+                            {"value": "requested", "label": "Requested"}
+                        ]
+                    },
+                    {"name": "only_private_comments", "label": "Private Comments Only", "hint": "true if this user only can create private comments",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ]
+                    },
+                    {"name": "tags", "label": "Tags", "hint": "The tags of the user. Only present if your account has user tagging enabled"},
+                    {"name": "suspended", "label": "Suspended", "hint": "Tickets from suspended users are also suspended, and these users cannot log in to the end-user portal",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ]
+                    }
+                ]
+            },
+            "ticket": {
+                "label": "Ticket",
+                "apiDocs": "http://developer.zendesk.com/documentation/rest_api/tickets.html",
+                "operations": {"create":true},
+                "fields" : [
+                    {"name": "id", "label": "ID", "hint": "Automatically assigned when creating tickets", "provideOn": {"create": "exclude"}},
+                    {"name": "url", "label": "URL",	"hint": "The API url of this ticket", "provideOn": {"create": "exclude"}},
+                    {"name": "external_id", "label": "External ID",	"hint": "A unique external id, you can use this to link Zendesk tickets to local records"},
+                    {"name": "type", "label": "Type", "hint": "The type of this ticket",
+                        "values": [
+                            {"value": "problem", "label": "Problem"},
+                            {"value": "incident", "label": "Incident"},
+                            {"value": "question", "label": "Question"},
+                            {"value": "task", "label": "Task"}
+                        ]
+                    },
+                    {"name": "subject", "label": "Subject",	"hint": "The value of the subject field for this ticket"},
+                    {"name": "description", "label": "Description",	"hint": "The first comment on the ticket", "provideOn": {"create": "mandatory"}},
+                    {"name": "priority", "label": "Priority", "hint": "Priority, defines the urgency with which the ticket should be addressed",
+                        "values": [
+                            {"value": "urgent", "label": "Urgent"},
+                            {"value": "high", "label": "High"},
+                            {"value": "normal", "label": "Normal"},
+                            {"value": "low", "label": "Low"}
+                        ]
+                    },
+                    {"name": "status", "label": "Status", "hint": "The state of the ticket",
+                        "values": [
+                            {"value": "new", "label": "New"},
+                            {"value": "open", "label": "Open"},
+                            {"value": "pending", "label": "Pending"},
+                            {"value": "hold", "label": "Hold"},
+                            {"value": "solved", "label": "Solved"},
+                            {"value": "closed", "label": "Closed"}
+                        ]
+                    },
+                    {"name": "recipient", "label": "Recipient",	"hint": "The original recipient e-mail address of the ticket", "provideOn": {"create": "exclude"}},
+                    {"name": "requester_id", "label": "Requester ID", "hint": "The user who requested/submitted the ticket", "provideOn": {"create": "exclude", "update": "exclude", "delete": "exclude"}},
+                    {"name": "requester_id", "label": "Requester Email", "hint": "The user who requested/submitted the ticket", "provideOn": {"read": "exclude"},
+                        "values": {"lookup_data": "user", "value_field": "id"}
+                    },
+                    {"name": "submitter_id", "label": "Submitter", "hint": "The user who submitted the ticket; this is the currently authenticated API user", "provideOn": {"create": "exclude"}},
+                    {"name": "assignee_id", "label": "Assignee",	"hint": "What agent is currently assigned to the ticket",
+                        "values": {
+                            "load_data": "user", "object_id": "id", "object_label": "name"
+                        }
+                    },
+                    {"name": "organization_id", "label": "Organization ID",	"hint": "The organization of the requester", "provideOn": {"create": "exclude"}},
+                    {"name": "group_id", "label": "Group ID", "hint": "The group this ticket is assigned to"},
+                    {"name": "forum_topic_id", "label": "Forum Topic ID", "hint": "The topic this ticket originated from, if any"},
+                    {"name": "problem_id", "label": "Problem ID", "hint": "The problem this incident is linked to, if any"},
+                    {"name": "has_incidents", "label": "Has Incidents",	"hint": "Is true of this ticket has been marked as a problem, false otherwise", "provideOn": {"create": "exclude"},
+                        "values": {
+                            "true": "Yes", "false": "No"
+                        }
+                    },
+                    {"name": "due_at", "label": "Due At", "hint": "If this is a ticket of type 'task' it has a due date. Due date format uses ISO 8601 format."},
+                    {"name": "created_at", "label": "Created At", "hint": "When this record was created", "provideOn": {"create": "exclude"}},
+                    {"name": "updated_at", "label": "Updated At", "hint": "When this record last got updated", "provideOn": {"create": "exclude"}}
+                ]
+            }
+        }
+    },
+    "httpDescriptor" : {
+        "baseUrl" : "https://${auth.zendeskSubdomain}.zendesk.com/",
+        "httpBASICAuthCreds": "${auth.agentEmail}/token:${auth.apiToken}",
+        "contentType": "application/json",
+        "objOperations" : {
+            "*" : {
+                "READ_INITIAL_SYNC" : {
+                    "method": "GET",
+                    "url": "/api/v2/search.json",
+                    "params": {
+                        "query": "type:${objectName}",
+                        "sort_by": "created_at",
+                        "sort_order": "desc",
+                        "per_page": 1
+                    },
+                    "evals": {
+                        "success": "response.notFail && response.json.count != 0",
+                        "data": "response.json.results"
+                    }
+                },
+                "READ_NEW" : {
+                    "method": "GET",
+                    "url": "/api/v2/search.json",
+                    "requestDecorator": "com.foxweave.connector.zendesk.CreatedAfterPaginatedRequestDecorator",
+                    "transformer": "com.foxweave.connector.zendesk.AlreadySyncdFilteringTransformer",
+                    "params": {
+                        "query": "type:${objectName} created>${lastMessage.created_at}",
+                        "sort_by": "created_at",
+                        "sort_order": "asc",
+                        "per_page": 10
+                    },
+                    "evals": {
+                        "success": "response.notFail && response.json.count != 0",
+                        "data": "response.json.results",
+                        "nextPage": "response.json.next_page"
+                    }
+                },
+                "READ_ALL" : {
+                    "method": "GET",
+                    "url": "api/v2/${objectName}s.json",
+                    "evals": {
+                        "success": "response.notFail",
+                        "data": "response.json.${objectName}s"
+                    }
+                },
+                "CREATE" : {
+                    "method": "POST",
+                    "url": "api/v2/${objectName}s.json",
+                    "transformer": "com.foxweave.connector.http.transform.SimpleNameWrapTransformer",
+                    "evals": {
+                        "success": "response.notFail"
+                    }
+                }
+            },
+            "user" : {
+                "READ_LOOKUP" : {
+                    "method": "GET",
+                    "url": "/api/v2/search.json",
+                    "lookup_fields": [{"name": "email"}],
+                    "params": {
+                        "query": "type:user email:${lookup_fields.email}",
+                        "per_page": 2
+                    },
+                    "evals": {
+                        "success": "response.notFail && response.json.count == 1",
+                        "data": "response.json.results[0]"
+                    }
+                }
+            }
+        }
+    },
+    "components": [
+        {
+            "name": "zendesk",
+            "displayName": "Zendesk",
+            "whatitdoes": "Listen for events in Zendesk, the popular customer Help Desk Service.",
+            "type": "InputConnector",
+            "category": "customer_support",
+            "runtime": "com.foxweave.connector.http.SaaSInputConnector",
+            "smalllogo": "ui/images/favicon.png",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/input-connector-help.html",
+            "configUI": {
+                "html": "ui/connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "zendesk",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-zendesk-0.1.jar"
+                }
+            ]
+        },
+        {
+            "name": "zendesk",
+            "displayName": "Zendesk",
+            "whatitdoes": "Create objects in Zendesk, the popular customer Help Desk Service.",
+            "type": "OutputConnector",
+            "category": "customer_support",
+            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
+            "smalllogo": "ui/images/favicon.png",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/output-connector-help.html",
+            "configUI": {
+                "html": "ui/connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "zendesk",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-zendesk-0.1.jar"
+                }
+            ]
+        }
+    ]
+}

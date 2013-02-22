@@ -1,0 +1,120 @@
+project.ext.set("foxweaveVersion", "0.1")
+project.ext.set("slf4jVersion", "1.6.4")
+
+apply plugin: 'idea'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'maven'
+
+    project.archivesBaseName = 'foxweave-components' + '-' + project.path.substring(1).replaceAll('/', '-')
+    project.buildDir = 'target';
+    project.ext.set('groupId', 'com.foxweave');
+    project.ext.set('artifactId', project.archivesBaseName);
+    project.version = '0.1';
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    configurations {
+        provided {
+            description = "provided 'scope'"
+            transitive = true
+        }
+        component {
+            description = "component dependency"
+            transitive = true
+        }
+        component.extendsFrom(compile)
+        testCompile.extendsFrom(component, provided)
+        compile.transitive = true
+    }
+
+    dependencies {
+        provided group: 'org.slf4j', name: 'slf4j-api', version: project.slf4jVersion
+        testCompile group: 'com.foxweave', name: 'foxweave-testutil', version: project.foxweaveVersion
+    }
+
+    install {
+        repositories.mavenInstaller {
+            pom.whenConfigured { pom ->
+                if (pom.groupId == 'foxweave' ) {
+                    pom.artifactId = project.artifactId
+                    pom.groupId = project.groupId
+                    pom.version = '0.1'
+                }
+                pom.dependencies.findAll {
+                    if (it.groupId.startsWith('foxweave')) {
+                        it.artifactId = "foxweave-" + it.artifactId.replaceAll('/', '-')
+                        it.groupId = project.groupId
+                        it.version = '0.1'
+                    }
+                }
+            }
+        }
+    }
+
+    sourceCompatibility = 1.6
+
+	eclipse {
+		project {
+			name = archivesBaseName
+		}
+	}
+
+    idea {
+        // http://gradle.org/docs/current/dsl/org.gradle.plugins.ide.idea.model.IdeaModule.html
+		module {
+            name = archivesBaseName
+            scopes.PROVIDED.plus += configurations.provided
+            scopes.PROVIDED.plus += configurations.component
+		}
+    }
+}
+
+project.ext.set("foxweaveComponents", subprojects.findAll { project ->
+    true
+})
+
+configure(project.foxweaveComponents) {
+    apply plugin: 'application'
+
+    // Application plugin configuration
+    applicationDistribution.exclude("**/*")
+    applicationName = projectDir.name
+    mainClassName = ""
+
+    project.ext.set("startScripts.disabled", true)
+
+	sourceSets {
+		main {
+			resources {
+				include 'foxweave-components.json'
+			}
+		}
+	}
+
+    distZip {
+        baseName = applicationName
+        archiveName = "${applicationName}.zip"
+        into('/') {
+            from 'src/main/resources'
+            include '**/*'
+        }
+        into('/lib') {
+            from configurations.component
+            from "${buildDir}/libs/"
+            include '**/*.jar'
+        }
+    }
+
+    task installComp(type : Copy, dependsOn: [distZip]) {
+        description = 'Installs the component to the local filestore (~/.foxweave/components)'
+        from zipTree("${buildDir}/distributions/${applicationName}.zip")
+        into file(System.getProperty("user.home") + "/.foxweave/components/${projectDir.name}")
+    }
+}

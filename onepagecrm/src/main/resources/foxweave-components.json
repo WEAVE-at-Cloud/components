@@ -1,0 +1,137 @@
+{
+    "displayName": "OnePage CRM",
+    "smalllogo": "ui/images/favicon.ico",
+    "largelogo": "ui/images/largelogo.png",
+    "authDescriptor" : {
+        "title": "OnePage CRM Account",
+        "authType" : "OAuth2"
+    },
+    "dataModel": {
+        "objects": {
+            "contact": {
+                "label": "Contact",
+                "apiDocs": "http://www.onepagecrm.com/api/api-doc-for-dev-contacts.html",
+                "postInputTransformer": "com.foxweave.onepagecrm.ContactPostInputTransformer",
+                "preOutputTransformer": "com.foxweave.onepagecrm.ContactPreOutputTransformer",
+                "operations": {"create":true},
+                "fields" : [
+                    {"name": "id", "label": "ID", "hint": "Contact ID", "provideOn": {"create": "exclude"}},
+                    {"name": "firstname", "label": "First Name", "hint": "Contact firstname"},
+                    {"name": "lastname", "label": "Last Name", "hint": "Contact lastname"},
+                    {"name": "company", "label": "Company", "hint": "Company name"},
+                    {"name": "work_phone", "label": "Work Phone", "hint": "Contact work phone number"},
+                    {"name": "work_email", "label": "Work Email", "hint": "Contact work email address"},
+                    {"name": "home_phone", "label": "Home Phone", "hint": "Contact home/personal phone number"},
+                    {"name": "mobile_phone", "label": "Mobile/Cell Phone", "hint": "Contact mobile/cell phone number"},
+                    {"name": "home_email", "label": "Home Email", "hint": "Contact home email address"},
+                    {"name": "job_title", "label": "Job Title", "hint": "Contact’s job title"},
+                    {"name": "address", "label": "Address", "hint": "Address"},
+                    {"name": "city", "label": "City", "hint": "City (address)"},
+                    {"name": "state", "label": "State", "hint": "State (address)"},
+                    {"name": "zip_code", "label": "Zip Code", "hint": "ZIP code (address)"},
+                    {"name": "country", "label": "Country", "hint": "Country ISO code (address)"},
+                    {"name": "description", "label": "Description", "hint": "Contact description (AKA background)"},
+                    {"name": "nextaction", "label": "Next Action", "hint": "Information about next action (may be empty). See subsection related to contact action in order to get element content details).",
+                        "provideOn": {"create": "exclude"},
+                        "fields": [
+                    		{"name": "date", "label": "Date", "hint": "Action's Date"},
+                    		{"name": "text", "label": "Text", "hint": "Action's Text"},
+                    		{"name": "next", "label": "Next", "hint": "Action is next flag"}
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "httpDescriptor" : {
+        "baseUrl" : "https://app.onepagecrm.com/",
+        "contentType": "application/json",
+        "objOperations" : {
+            "*" : {
+                "READ_INITIAL_MIGRATE, READ_CONTINUE_MIGRATE, READ_INITIAL_SYNC, READ_NEW" : {
+                    "method": "GET",
+                    "url": "/api/${objectName}s.json",
+                    "params": {
+                        "newest": 1,
+                        "page": "${pageNum}"
+                    },
+                    "evals": {
+                        "success": "response.notFail && response.json.status == 0",
+                        "data": "response.json.data.${objectName}s"
+                    }
+                },
+                "CREATE" : {
+                    "method": "POST",
+                    "url": "/api/${objectName}s.json",
+                    "evals": {
+                        "success": "response.notFail"
+                    }
+                }
+            }
+        }
+    },
+    "components": [
+        {
+            "name": "onepagecrm",
+            "displayName": "OnePage CRM",
+            "whatitdoes": "Listen for events in OnePage CRM, the Smart Online CRM for Small Business.",
+            "type": "InputConnector",
+            "category": "crm_erp",
+            "runtime": "com.foxweave.connector.http.SaaSInputConnector",
+            "smalllogo": "ui/images/favicon.ico",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/input-connector-help.html",
+            "configUI": {
+                "html": "ui/connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "syncCache" : {
+                "keyField": "id"
+            },
+            "supportsMigrate": true,
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "onepagecrm",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-onepagecrm-0.1.jar"
+                }
+            ]
+        },
+        {
+            "name": "onepagecrm",
+            "displayName": "OnePage CRM",
+            "whatitdoes": "Create Contacts etc in OnePage CRM, the Smart Online CRM for Small Business.",
+            "type": "OutputConnector",
+            "category": "crm_erp",
+            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
+            "smalllogo": "ui/images/favicon.ico",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/output-connector-help.html",
+            "configUI": {
+                "html": "ui/connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "onepagecrm",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-onepagecrm-0.1.jar"
+                }
+            ]
+        }
+    ]
+}

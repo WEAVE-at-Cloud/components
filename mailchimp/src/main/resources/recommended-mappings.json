@@ -1,0 +1,48 @@
+{
+    "mappings": [
+        {
+            "from": {
+                "componentName": "salesforce:salesforce",
+                "objectName": "Contact",
+                "label": "Contact"
+            },
+            "to": {
+                "componentName": "mailchimp:mailchimp",
+                "objectName": "listSubscribe",
+                "label": "List Subscribe"
+            },
+            "model": [
+                {
+                    "from": "FirstName",
+                    "to": "FNAME"
+                },
+                {
+                    "from": "LastName",
+                    "to": "LNAME"
+                },
+                {
+                    "from": "Email",
+                    "to": "email_address"
+                }
+            ]
+        },
+        {
+            "from": {
+                "componentName": "salesforce:salesforce",
+                "objectName": "Contact",
+                "label": "Contact"
+            },
+            "to": {
+                "componentName": "mailchimp:mailchimp",
+                "objectName": "listUnsubscribe",
+                "label": "List Unsubscribe"
+            },
+            "model": [
+                {
+                    "from": "Email",
+                    "to": "email_address"
+                }
+            ]
+        }
+    ]
+}

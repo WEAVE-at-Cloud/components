@@ -1,0 +1,168 @@
+{
+    "displayName": "MailChimp",
+    "smalllogo": "ui/images/favicon.ico",
+    "largelogo": "ui/images/mc.png",
+    "authDescriptor" : {
+        "title": "MailChimp API Key Details",
+        "params" : {
+            "accountName": {
+                "label" : "Account Alias",
+                "hint": "Account name/alias used to refer to the MailChimp account accessed by the API Key specified below."
+            },
+            "apiKey": {
+                "label" : "API Key",
+                "type": "password",
+                "hint": "MailChimp API Key.  Check 'API Keys & Authorized Apps' in your MailChimp Account Settings."
+            }
+        }
+    },
+    "dataModel": {
+        "objects": {
+            "listSubscribe": {
+                "label": "Add Subscriber",
+                "operations": {"create":true},
+                "fields" : [
+                    {"name":"FNAME","label":"First Name"},
+                    {"name":"LNAME","label":"Last Name"},
+                    {"name":"email_address","label":"Email Address",
+                        "provideOn": {
+                            "create": "mandatory"
+                        }
+                    },
+                    {"name":"double_optin","label":"Double Opt-In", "defaultVal": "true",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ],
+                        "hint": "Flag to control whether a double opt-in confirmation message is sent. Note that abusing this may cause your MailChimp account to be suspended."
+                    },
+                    {"name":"send_welcome","label":"Send Welcome Email", "defaultVal": "false",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ],
+                        "hint": "If 'No' is selected for 'Double Opt-In' and 'Yes' is selected for this field, MailChimp will send your lists Welcome Email (if the subscriber is successfully added - this will *not* fire if MailChimp ends up updating an existing subscriber). If you select 'Yes' for 'Double Opt-In', this field has no effect."
+                    }
+                ]
+            },
+            "listUnsubscribe": {
+                "label": "Remove Subscriber",
+                "operations": {"create":true},
+                "fields" : [
+                    {"name":"email_address","label":"Email Address",
+                        "provideOn": {
+                            "create": "mandatory"
+                        }
+                    },
+                    {"name":"delete_member","label":"Delete Member", "defaultVal": "false",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ],
+                        "hint": "Flag to completely delete the member from your list instead of just unsubscribing."
+                    },
+                    {"name":"send_goodbye","label":"Send Goodbye Email", "defaultVal": "true",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ],
+                        "hint": "Flag to send the goodbye email to the email address."
+                    },
+                    {"name":"send_notify","label":"Send Notification Email", "defaultVal": "true",
+                        "values": [
+                            {"value": "true", "label": "Yes"},
+                            {"value": "false", "label": "No"}
+                        ],
+                        "hint": "Flag to send the unsubscribe notification email to the address defined in the list email notification settings."
+                    }
+                ]
+            }
+
+        }
+    },
+    "httpDescriptor" : {
+        "baseUrl" : "https://${auth.dataCenter}.api.mailchimp.com/1.3/",
+        "contentType": "application/json",
+        "objOperations" : {
+            "lists" : {
+                "READ_ALL" : {
+                    "method": "GET",
+                    "url": "?output=json&method=lists&apikey=${auth.apiKey}",
+                    "evals": {
+                        "success": "response.notFail",
+                        "data": "response.json.data"
+                    }
+                }
+            },
+            "listSubscribe" : {
+                "CREATE" : {
+                    "method": "GET",
+                    "params": {
+                        "output": "json",
+                        "method": "listSubscribe",
+                        "apikey": "${auth.apiKey}",
+                        "id": "${config.mcList}",
+                        "email_address": "${message.email_address}",
+                        "double_optin": "${message.double_optin}",
+                        "send_welcome": "${message.send_welcome}",
+                        "merge_vars[FNAME]": "${message.FNAME}",
+                        "merge_vars[LNAME]": "${message.LNAME}"
+                    },
+                    "evals": {
+                        "success": "response.body == 'true'"
+                    }
+                }
+            },
+            "listUnsubscribe" : {
+                "CREATE" : {
+                    "method": "GET",
+                    "params": {
+                        "output": "json",
+                        "method": "listUnsubscribe",
+                        "apikey": "${auth.apiKey}",
+                        "id": "${config.mcList}",
+                        "email_address": "${message.email_address}",
+                        "delete_member": "${message.delete_member}",
+                        "send_goodbye": "${message.send_goodbye}",
+                        "send_notify": "${message.send_notify}"
+                    },
+                    "evals": {
+                        "success": "response.body == 'true'"
+                    }
+                }
+            }
+
+        }
+    },
+    "components": [
+        {
+            "name": "mailchimp",
+            "displayName": "MailChimp",
+            "whatitdoes": "Add and remove MailChimp list Subscribers.",
+            "type": "OutputConnector",
+            "category": "messaging",
+            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
+            "smalllogo": "ui/images/favicon.ico",
+            "largelogo": "ui/images/mc.png",
+            "help": "ui/help/out-connector-help.html",
+            "configUI": {
+                "html": "ui/out-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "mailchimp",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-mailchimp-0.1.jar"
+                }
+            ]
+        }
+    ]
+}
