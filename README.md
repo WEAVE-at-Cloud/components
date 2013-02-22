@@ -55,7 +55,7 @@ You don't want the trouble of building and uploading a full module distribution 
 To avoid this, you can simply update and then PUT individual resources.  For example, to update and PUT local changes to the *foxweave-components.json*
 module descriptor file:
 
-    curl -X PUT -T src/main/resources/foxweave-components.json -H "Content-Type: application/json" https://dev.foxweave.io/component/onepagecrm/foxweave-components.json?apiKey=XXXXXX
+    curl -X PUT -T src/main/resources/foxweave-components.json -H "Content-Type: application/json" https://dev.foxweave.io/component/myfunkyapp/foxweave-components.json?apiKey=XXXXXX
 
 [1]: http://www.foxweave.com/integration-runtime-options/ "Integration Task Runtime Options"
 [2]: http://www.foxweave.com/synchronization-vs-migration/ "Synchronization Vs Migration"
