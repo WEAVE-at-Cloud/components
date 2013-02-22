@@ -1,0 +1,116 @@
+{
+    "displayName": "PostgreSQL",
+    "smalllogo": "ui/images/smalllogo.ico",
+    "largelogo": "ui/images/largelogo.jpg",
+    "authDescriptor" : {
+        "title": "PostgresSQL Server",
+        "params" : {
+            "accountName": {
+                "displayIndex": 1,
+                "label" : "Server Name",
+                "hint": "The name you would like to use to refer to this PostgresSQL Server instance."
+            },
+            "host": {
+                "displayIndex": 2,
+                "label" : "Host",
+                "value": "",
+                "hint": "PostgresSQL Host Name or IP Address. This is the host name relevant to where the Integration Application App will be run."
+            },
+            "port": {
+                "displayIndex": 3,
+                "label" : "Port",
+                "value": "5432",
+                "hint": "PostgresSQL Host Port Number."
+            },
+            "username": {
+                "displayIndex": 4,
+                "label" : "Username",
+                "hint": "PostgresSQL Host Account Username."
+            },
+            "password": {
+                "displayIndex": 5,
+                "label" : "Password",
+                "type": "password",
+                "hint": "PostgresSQL Host Account Password."
+            },
+            "driver": {
+                "displayIndex": 6,
+                "type": "hidden",
+                "value": "org.postgresql.Driver"
+            }
+        }
+    },
+    "components": [
+    {
+        "name": "postgres9",
+        "displayName": "PostgreSQL 9",
+        "whatitdoes": "Receive notification of new/updated records added to a PostgresSQL Database.",
+        "category": "database",
+        "type": "InputConnector",
+        "runtime": "com.foxweave.connector.rdb.input.RDBInputConnector",
+        "smalllogo": "ui/images/smalllogo.ico",
+        "largelogo": "ui/images/largelogo.jpg",
+        "allowedTargets": ["PAAS", "ONPREMISE"],
+        "supportsMigrate": true,
+        "help": "ui/help/input-connector-help.html",
+        "configUI": {
+            "html": "ui/connector-ui.html",
+            "viewJs": "ui/connector.js"
+        },
+        "deps": [
+            {
+                "groupId": "com.foxweave.connector",
+                "artifactId": "rdatabase",
+                "version": "0.1",
+                "fileName": "/lib/foxweave-abstract-components-rdatabase-0.1.jar"
+            },
+            {
+                "groupId": "com.foxweave.connector",
+                "artifactId": "postgres",
+                "version": "0.1",
+                "fileName": "/lib/foxweave-components-postgres-0.1.jar"
+            },
+            {
+                "groupId": "postgresql",
+                "artifactId": "postgresql",
+                "version": "9.0-801.jdbc4"
+            }
+        ]
+    },
+    {
+        "name": "postgres9",
+        "displayName": "PostgreSQL 9",
+        "whatitdoes": "Output/Update records to a PostgresSQL Database.",
+        "category": "database",
+        "type": "OutputConnector",
+        "runtime": "com.foxweave.connector.rdb.output.RDBOutputConnector",
+        "smalllogo": "ui/images/smalllogo.ico",
+        "largelogo": "ui/images/largelogo.jpg",
+        "help": "ui/help/output-connector-help.html",
+        "embedDataMapper": false,
+        "configUI": {
+            "html": "ui/connector-ui.html",
+            "viewJs": "ui/connector.js"
+        },
+        "deps": [
+            {
+                "groupId": "com.foxweave.connector",
+                "artifactId": "rdatabase",
+                "version": "0.1",
+                "fileName": "/lib/foxweave-abstract-components-rdatabase-0.1.jar"
+            },
+            {
+                "groupId": "com.foxweave.connector",
+                "artifactId": "postgres",
+                "version": "0.1",
+                "fileName": "/lib/foxweave-components-postgres-0.1.jar"
+            },
+            {
+                "groupId": "postgresql",
+                "artifactId": "postgresql",
+                "version": "9.0-801.jdbc4"
+            }
+        ]
+    }
+]
+}

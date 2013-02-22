@@ -1,0 +1,25 @@
+MySQL is a very popular open source Relational Database. <a href="http://www.foxweave.com/mysql/">See online docs for more details (and demos)</a>.
+<p/>
+Configuring the MySQL output connector is quite simple:
+<ol>
+    <li>Select the <strong>MySQL Server</strong> (press the <img src="/images/add.png"/> button to add an account, if needed).</li>
+    <li>Enter the name of the <strong>Database</strong> to which you wish to synchronize data.</li>
+    <li>Enter the insert/update <strong>SQL Statement</strong>.  Auto-complete of the statement value field mappings is supported.  See <strong>Tip</strong> below.</li>
+</ol>
+
+<div class="alert alert-info">
+    <strong>Tip:</strong> When creating a <strong>MySQL Server</strong> (after pressing the <img src="/images/add.png"/> button),
+    do NOT enter a local loopback address ("localhost" or "127.0.0.1") as the MySQL Server <strong>Host</strong> name/IP.  Remember that this MySQL Server <strong>Host</strong>
+    address needs to be resolvable on the FoxWeave target on which you chose to start/run the integration i.e. on an
+    <a href="http://www.foxweave.com/integration-runtime-options/">On-Premise or On-PaaS</a> host machine.
+</div>
+<div class="alert alert-info">
+    <strong>Tip:</strong> When entering the <strong>SQL Statement</strong> (step #3), use the 'Ctrl+Space' keyboard shortcut to
+    auto-complete the statement value field mappings i.e. the '#&lt;<i>in-field-name</i>&gt;' tokens as seen in the following example:
+    <p/>
+    <code>insert into subscriptions (id, firstn, lastn, eaddress) values (#id, #fname, #lname, #email)</code>
+    <p/>
+    Note that the cursor needs to be active in the <strong>SQL Statement</strong> textarea.  Check out this short video:
+    <p/>
+    <object width="640" height="360"><param name="movie" value="http://www.youtube.com/v/qBJLuAQxQS8?hl=en_US&amp;version=3&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/qBJLuAQxQS8?hl=en_US&amp;version=3&amp;rel=0" type="application/x-shockwave-flash" width="640" height="360" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+</div>

@@ -1,0 +1,4 @@
+dependencies {
+    compile ("com.foxweave:foxweave-abstract-components-rdatabase:${foxweaveVersion}");
+    runtime fileTree(dir: 'src/main/resources/lib', include: '*.jar')
+}

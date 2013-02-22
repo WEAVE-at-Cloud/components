@@ -1,0 +1,4 @@
+dependencies {
+    compile ("com.foxweave:foxweave-abstract-components-rdatabase:${foxweaveVersion}");
+    compile ("postgresql:postgresql:9.0-801.jdbc4");
+}

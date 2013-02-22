@@ -1,0 +1,29 @@
+MySQL is a very popular open source Relational Database. <a href="http://www.foxweave.com/mysql/">See online docs for more details (and demos)</a>.
+<p/>
+Configuring the MySQL input connector is quite simple:
+<ol>
+    <li>Select the <strong>MySQL Server</strong> (press the <img src="/images/add.png"/> button to add an account, if needed).</li>
+    <li>Enter the name of the <strong>Database</strong> from which you wish to synchronize data.</li>
+    <li>Enter the <strong>SQL Statement</strong> (without adding a <code>where</code> clause).</li>
+    <li>Select the <strong>Sequence Field</strong> to be used by FoxWeave to keep track of records that is
+        has already sync'd.</li>
+</ol>
+
+<div class="alert alert-info">
+    <strong>Tip:</strong> When creating a <strong>MySQL Server</strong> (after pressing the <img src="/images/add.png"/> button),
+    do NOT enter a local loopback address ("localhost" or "127.0.0.1") as the MySQL Server <strong>Host</strong> name/IP.  Remember that this MySQL Server <strong>Host</strong>
+    address needs to be resolvable on the FoxWeave target on which you chose to start/run the integration i.e. on an
+    <a href="http://www.foxweave.com/integration-runtime-options/">On-Premise or On-PaaS</a> host machine.
+</div>
+<div class="alert alert-info">
+    <strong>Tip:</strong> When entering the <strong>SQL Statement</strong> (step #3), DO NOT include a <code>where</code> clause in the statement.
+    This will be added automatically when you select the <strong>Sequence Field</strong> (step #4).
+</div>
+<div class="alert alert-info">
+    <strong>Tip:</strong> The <strong>Sequence Field</strong> (selected in step #4) is used by FoxWeave to keep track of records that have
+    already been sync'd. This field need to of a type and value that can be tested (in the generated <code>where</code> clause) for an
+    ascending value e.g. an ascending <strong>id</strong> value field.  FoxWeave uses the value of this field (from the last record sync'd) as part
+    of a <u>generated</u> greater-than <code>where</code> clause e.g.:
+    <p/>
+    <code>select A, B, C from mytable <strong><u>where id > ${lastMessage.id}</u></strong></code>.
+</div>

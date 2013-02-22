@@ -1,5 +1,8 @@
 rootProject.name = 'foxweave-components'
 
 include ':mailchimp'
+include ':mysql'
 include ':onepagecrm'
+include ':oracle'
+include ':postgres'
 include ':zendesk'
