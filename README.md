@@ -2,11 +2,12 @@
 This repository is the home for all **public** FoxWeave Component Modules.
 
 "Component Modules" are how we bundle Connectors and other components that extend the core functionality of
-of FoxWeave to "connect" to [Cloud APIs/Apps/DBs or On-Premise Apps/DBs][1] for the purpose of
+FoxWeave to "connect" to [Cloud APIs/Apps/DBs or On-Premise Apps/DBs][1] for the purpose of
 synchronizing or migrating data.  You can use the modules in this repository as references for creating
 new modules to connect to other [Cloud APIs/Apps/DBs or On-Premise Apps/DBs][1].  Alternatively, make
-enhancements/fixes to existing modules.  If you create/enhance/fix a connector, please let us know by
-submitting a pull request on the github repository.
+enhancements/fixes to existing modules.
+
+If you create/enhance/fix a connector, please let us know by submitting a pull request on the github repository.
 
 ## Creating/Updating a Component Modules
 The first thing you'll need to do is fork and clone this repository.  If you want to create a new module, the easiest
@@ -23,6 +24,7 @@ upload it to your account on FoxWeave.
 We use [Gradle][3] v1.4 as our build tool.  You'll need to download and install Gradle (as well as Java v1.6).
 
 To build/assemble the module, cd into the module directory and execute the following command:
+
     $ gradle clean distZip
 
 After this command completes, the module will have a distribution *.zip* file located in the
@@ -34,9 +36,11 @@ You now need to upload the assembled distribution *.zip* file to your account on
 You just POST it to “https://dev.foxweave.io/component“, including your apiKey as a query parameter.
 
 The following is an example using curl:
+
     curl -T target/distributions/myfunkyapp.zip -H "Content-Type: application/zip" https://dev.foxweave.io/component/myfunkyapp?apiKey=XXXXXX
 
 As you've probably guessed from above, the target URL is formatted as follows:
+
     https://dev.foxweave.io/component/{module-name}?apiKey={account-api-key}
 
 Your account API key can be found in your profile after logging into your account on FoxWeave.  Just follow "Settings->API" from the top menu bar.
