@@ -331,6 +331,10 @@ Full-Width Styles
   background: url('../images/icon_download.png') no-repeat 0% 90%;
 }
 
+#downloads {
+    display: none;
+}
+
 .zip_download_link {
   display: block;
   float: right;
@@ -380,7 +384,7 @@ Full-Width Styles
 Small Device Styles
 *******************************************************************************/
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 960px) {
   body {
     font-size:14px;
   }
@@ -391,7 +395,7 @@ Small Device Styles
 
   .inner {
     min-width: 320px;
-    max-width: 480px;
+    max-width: 960px;
   }
 
   #project_title {
@@ -424,7 +428,7 @@ Small Device Styles
 
   code, pre {
     min-width: 320px;
-    max-width: 480px;
+    max-width: 960px;
     font-size: 11px;
   }
 
