@@ -1,9 +1,10 @@
-$.foxweave.addComponentView(function(config, viewConfig) {
+$.foxweave.addComponentView(function() {
+    var component = this;
 
     // Don't specify a DB name for Oracle...
     $('#rdb_db_name_row').remove();
 
-    if (viewConfig.componentDescriptor.type === 'InputConnector') {
+    if (component.descriptor.type === 'InputConnector') {
         // Uppercase the SQL statement for Oracle when it's an input connector.
         // Only do this for the input because it produces records for the pipeline
         // and so we need the "produces" variables (that the pipeline components after the
@@ -12,18 +13,10 @@ $.foxweave.addComponentView(function(config, viewConfig) {
         $('#rdb_sql_statement').addClass('toUppercase');
     }
 
-    $('#authAccountSelector').change(function() {
-        if ($(this).val() !== '') {
-            configureDBConnection();
+    component.onAccountChanged(function() {
+        component.config('rdb_url', '');
+        if (component.accountSelected) {
+            component.config('rdb_url', "jdbc:oracle:thin:@//" + component.accountSelected.host + ":" + component.accountSelected.port + "/" + component.accountSelected.service);
         }
     });
-
-    function configureDBConnection() {
-        config['rdb_url'] = '';
-
-        if (viewConfig.accountSelected) {
-            config['rdb_url'] = "jdbc:oracle:thin:@//" + viewConfig.accountSelected.host + ":" + viewConfig.accountSelected.port + "/" + viewConfig.accountSelected.service;
-            config['scheduler_delay'] = '60000';
-        }
-    };
 });

@@ -1,3 +1,3 @@
-$.foxweave.addComponentView(function(config, viewConfig) {
+$.foxweave.addComponentView(function() {
 
 });

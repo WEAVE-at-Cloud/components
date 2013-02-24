@@ -1,17 +1,18 @@
-$.foxweave.addComponentView(function(config, viewConfig) {
+$.foxweave.addComponentView(function() {
+    var component = this;
 
-    $('#authAccountSelector, #rdb_db_name').change(function() {
-        configureDBConnection();
+    component.onAccountChanged(function() {
+        setRdbUrl();
+    });
+    $('#rdb_db_name').change(function() {
+        setRdbUrl();
     });
 
-    function configureDBConnection() {
-        config['rdb_url'] = '';
-
-        var db = $('#rdb_db_name').val();
-        if (viewConfig.accountSelected) {
-            config['rdb_url'] = "jdbc:mysql://" + viewConfig.accountSelected.host + ":" + viewConfig.accountSelected.port + "/" + db;
-            config['scheduler_delay'] = '60000';
+    function setRdbUrl() {
+        component.config('rdb_url', '');
+        if (component.accountSelected) {
+            var db = $('#rdb_db_name').val();
+            component.config('rdb_url', "jdbc:mysql://" + component.accountSelected.host + ":" + component.accountSelected.port + "/" + db);
         }
-    };
-
+    }
 });

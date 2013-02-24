@@ -1,6 +1,7 @@
-$.foxweave.addComponentView(function(config, viewConfig) {
+$.foxweave.addComponentView(function() {
+        var component = this;
 
-        $('#authAccountSelector').onAccountAdded(function(e) {
+        component.onAccountAdded(function(e) {
             // The mailchimp data center id is tagged onto the end of the
             // apiKey.  Parse it off the key and add it to the auth info,
             // from where it can be referenced in url construction etc...
