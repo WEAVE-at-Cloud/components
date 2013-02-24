@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Component : FoxWeave Component Modules" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Component</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/FoxWeave/components">View on GitHub</a>
+
+          <h1 id="project_title">Component</h1>
+          <h2 id="project_tagline">FoxWeave Component Modules</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/FoxWeave/components/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/FoxWeave/components/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>FoxWeave Component Modules</h1>
+
+<p>This repository is the home for all <strong>public</strong> FoxWeave Component Modules.</p>
+
+<p>"Component Modules" are how we bundle Connectors and other components that extend the core functionality of
+FoxWeave to "connect" to <a href="http://www.foxweave.com/integration-runtime-options/" title="Integration Task Runtime Options">Cloud APIs/Apps/DBs or On-Premise Apps/DBs</a> for the purpose of
+synchronizing or migrating data.  You can use the modules in this repository as references for creating
+new modules to connect to other <a href="http://www.foxweave.com/integration-runtime-options/" title="Integration Task Runtime Options">Cloud APIs/Apps/DBs or On-Premise Apps/DBs</a>.  Alternatively, make
+enhancements/fixes to existing modules.</p>
+
+<p>If you create/enhance/fix a connector, please let us know by submitting a pull request on the github repository.</p>
+
+<h2>Creating/Updating a Component Modules</h2>
+
+<p>The first thing you'll need to do is fork and clone this repository.  If you want to create a new module, the easiest
+thing to do is copy one of the existing modules and work from that.  If it is a new module, you need to add
+it in the <em>settings.gradle</em> file in the root of the repository.</p>
+
+<p>Please check out the <a href="http://www.foxweave.com/component-developer-guide/">Component Developer Guide</a> for details on developing a Component Module.</p>
+
+<h2>Building and Uploading Component Modules</h2>
+
+<p>We assume you've forked and cloned this repository and added/enhanced a module (as outlined in the previous section) and would now like to
+upload it to your account on FoxWeave.</p>
+
+<h3>Step 1</h3>
+
+<p>We use <a href="http://www.gradle.org/">Gradle</a> v1.4 as our build tool.  You'll need to download and install Gradle (as well as Java v1.6).</p>
+
+<p>To build/assemble the module, cd into the module directory and execute the following command:</p>
+
+<pre><code>$ gradle clean distZip
+</code></pre>
+
+<p>After this command completes, the module will have a distribution <em>.zip</em> file located in the
+<em>target/distributions</em> folder e.g. if your component is called "myfunkyapp", the distribution <em>.zip</em> file
+would be <em>target/distributions/myfunkyapp.zip</em>.</p>
+
+<h3>Step 2</h3>
+
+<p>You now need to upload the assembled distribution <em>.zip</em> file to your account on FoxWeave.  This is very easy.
+You just POST it to “<a href="https://dev.foxweave.io/component%E2%80%9C">https://dev.foxweave.io/component“</a>, including your apiKey as a query parameter.</p>
+
+<p>The following is an example using curl:</p>
+
+<pre><code>curl -X POST -T target/distributions/myfunkyapp.zip -H "Content-Type: application/zip" https://dev.foxweave.io/component/myfunkyapp?apiKey=XXXXXX
+</code></pre>
+
+<p>As you've probably guessed from above, the target URL is formatted as follows:</p>
+
+<pre><code>https://dev.foxweave.io/component/{module-name}?apiKey={account-api-key}
+</code></pre>
+
+<p>Your account API key can be found in your profile after logging into your account on FoxWeave.  Just follow "Settings-&gt;API" from the top menu bar.</p>
+
+<p>Note that when you upload a module to FoxWeave, it will:</p>
+
+<ol>
+<li>Only be visible/usable from your account i.e. other FoxWeave accounts cannot use any of the components in your module.  You will need to <a href="mailto:support@foxweave.com">get in contact with us</a> if you'd like to make the module public.</li>
+<li>Only be runnable on a <a href="http://www.foxweave.com/integration-runtime-options/" title="Integration Task Runtime Options">PaaS or On-Premise</a>.  This is obviously for security reasons.</li>
+</ol><h3>Updating Individual Resources</h3>
+
+<p>You don't want the trouble of building and uploading a full module distribution <em>.zip</em> file every time you make a change while you are developing a module.
+To avoid this, you can simply update and then PUT individual resources.  For example, to update and PUT local changes to the <em>foxweave-components.json</em>
+module descriptor file:</p>
+
+<pre><code>curl -X PUT -T src/main/resources/foxweave-components.json -H "Content-Type: application/json" https://dev.foxweave.io/component/myfunkyapp/foxweave-components.json?apiKey=XXXXXX
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Component maintained by <a href="https://github.com/FoxWeave">FoxWeave</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
