@@ -1,5 +1,7 @@
 # OnePageCRM Component Module
 
-[Go here for the OnePageCRM API Docs...](http://www.onepagecrm.com/api/sales-crm-api.html)
+Got to:
 
-[Go here for the Dev Wiki...](https://github.com/FoxWeave/components/wiki/FoxWeave%20Component%20Dev%20Wiki)
+* [OnePageCRM page on FoxWeave](http://www.foxweave.com/apps-and-dbs/onepagecrm/)
+* [Component Dev Wiki...](https://github.com/FoxWeave/components/wiki/FoxWeave%20Component%20Dev%20Wiki)
+* [OnePageCRM API Docs...](http://www.onepagecrm.com/api/sales-crm-api.html)

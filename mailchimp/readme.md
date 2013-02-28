@@ -1,4 +1,6 @@
 # MailChimp Component Module
-[Go here for the MailChimp API Docs...](http://apidocs.mailchimp.com/api/how-to/serializing.php)
+Got to:
 
-[Or go here for the Dev Wiki...](https://github.com/FoxWeave/components/wiki/FoxWeave%20Component%20Dev%20Wiki)
+* [MailChimp page on FoxWeave](http://www.foxweave.com/apps-and-dbs/mailchimp/)
+* [Component Dev Wiki...](https://github.com/FoxWeave/components/wiki/FoxWeave%20Component%20Dev%20Wiki)
+* [MailChimp API Docs...](http://apidocs.mailchimp.com/api/how-to/serializing.php)
