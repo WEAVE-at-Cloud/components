@@ -1,0 +1,250 @@
+{
+    "displayName": "Twilio",
+    "smalllogo": "ui/images/favicon.png",
+    "largelogo": "ui/images/largelogo.png",
+    "authDescriptor" : {
+        "title": "Twilio Account",
+        "authType" : "httpBASIC",
+        "params" : {
+            "accountName": {
+                "displayIndex": 1,
+                "label" : "Account Alias",
+                "hint": "Account name/alias used to refer to the Twilio account accessed by this set of security credentials."
+            },
+            "accountSid": {
+                "displayIndex": 2,
+                "label" : "AccountSid",
+                "type": "password",
+                "hint": "Unique ID of the Account.  You can find this at the top of your account DASHBOARD on Twilio."
+            },
+            "authToken": {
+                "displayIndex": 3,
+                "label" : "Account Auth Token",
+                "type": "password",
+                "hint": "Account Auth Token. You can find this at the top of your account DASHBOARD on Twilio."
+            }
+        }
+    },
+    "dataModel": {
+        "objects": {
+            "incoming_phone_number": {
+                "label": "Incoming Phone Number",
+                "display": "none",
+                "fields" : [
+                    {"name": "friendly_name", "label": "Friendly Name", "hint": "Phone number friendly name."},
+                    {"name": "phone_number", "label": "Phone Number", "hint": "Phone number."}
+                ]
+            },
+            "applicationSid": {
+                "label": "ApplicationSid",
+                "display": "none",
+                "fields" : [
+                    {"name": "friendly_name", "label": "Friendly Name", "hint": "Phone number friendly name."},
+                    {"name": "sid", "label": "ApplicationSid", "hint": "Application Sid."}
+                ]
+            },
+            "sms_in": {
+                "label": "New SMS Received",
+                "display": "InputConnector",
+                "fields" : [
+                    {"name": "from", "label": "From Phone Num", "hint": "Phone number the SMS was made from."},
+                    {"name": "to", "label": "To Phone Num", "hint": "Phone number the SMS was received on."},
+                    {"name": "date_created", "label": "Date", "hint": "SMS Date & Time."},
+                    {"name": "body", "label": "SMS Message Body", "hint": "SMS Date & Time."}
+                ],
+                "syncCache" : {"keyField": "sid"},
+                "filters" : [
+                    {"fieldName": "direction", "eval": "equalto", "value": "inbound"}
+                ]
+            },
+            "call_in": {
+                "label": "New Phone Call Received",
+                "display": "InputConnector",
+                "fields" : [
+                    {"name": "from", "label": "From Phone Num", "hint": "Phone number the call was made from."},
+                    {"name": "to", "label": "To Phone Num", "hint": "Phone number the call was received on."},
+                    {"name": "date_created", "label": "Date", "hint": "Call Date & Time."}
+                ],
+                "syncCache" : {"keyField": "sid"},
+                "filters" : [
+                    {"fieldName": "direction", "eval": "equalto", "value": "inbound"}
+                ]
+            },
+            "send_sms": {
+                "label": "Send SMS",
+                "display": "OutputConnector",
+                "fields" : [
+                    {"name": "from", "label": "From Phone Num", "hint": "A Twilio number enabled for SMS. Only phone numbers purchased from Twilio work here; you cannot (for example) spoof SMS messages from your own cell phone number.",
+                        "provideOn": {"create": "mandatory"},
+                        "values": {
+                            "load_data": "incoming_phone_number", "object_id": "phone_number", "object_label": "friendly_name"
+                        }
+                    },
+                    {"name": "to", "label": "To Phone Num", "hint": "The number to send an SMS to.",
+                        "provideOn": {"create": "mandatory"}
+                    },
+                    {"name": "body", "label": "SMS Message Body", "type": "textarea", "hint": "The text of the message you want to send, limited to 160 characters.",
+                        "provideOn": {"create": "mandatory"}
+                    }
+                ]
+            },
+            "make_phone": {
+                "label": "Make Phonecall",
+                "display": "OutputConnector",
+                "fields" : [
+                    {"name": "from", "label": "From Phone Num", "hint": "A Twilio number enabled for SMS. Only phone numbers purchased from Twilio work here; you cannot (for example) spoof SMS messages from your own cell phone number.",
+                        "provideOn": {"create": "mandatory"},
+                        "values": {
+                            "load_data": "incoming_phone_number", "object_id": "phone_number", "object_label": "friendly_name"
+                        }
+                    },
+                    {"name": "to", "label": "To Phone Num", "hint": "The number to send an SMS to.",
+                        "provideOn": {"create": "mandatory"}
+                    },
+                    {"name": "applicationSid", "label": "Application", "hint": "The application Twilio should use to handle this phone call. This is not required if a URL is passed. If this parameter is present, Twilio will ignore all of the voice URLs passed and use the URLs set on the application.",
+                        "values": {
+                            "load_data": "applicationSid", "object_id": "sid", "object_label": "friendly_name"
+                        }
+                    },
+                    {"name": "url", "label": "Url", "hint": "The fully qualified URL that should be consulted when the call connects, just like when you set a URL for your inbound calls. If an Application is specified, this parameter will be ignored and the URLs set on the application will be used instead.", "class": "input-xxlarge"}
+                ]
+            }
+        }
+    },
+    "httpDescriptor" : {
+        "baseUrl" : "https://api.twilio.com/2010-04-01/Accounts/${auth.accountSid}",
+        "httpBASICAuthCreds": "${auth.accountSid}:${auth.authToken}",
+        "contentType": "application/json",
+        "objOperations" : {
+            "incoming_phone_number" : {
+                "READ_ALL" : {
+                    "method": "GET", "url": "/IncomingPhoneNumbers.json",
+                    "evals": {
+                        "success": "response.notFail",
+                        "data": "response.json.incoming_phone_numbers"
+                    }
+                }
+            },
+            "applicationSid" : {
+                "READ_ALL" : {
+                    "method": "GET", "url": "/Applications.json",
+                    "evals": {
+                        "success": "response.notFail",
+                        "data": "response.json.applications"
+                    }
+                }
+            },
+            "sms_in" : {
+                "READ_INITIAL_SYNC, READ_NEW" : {
+                    "method": "GET", "url": "SMS/Messages.json", "contentType": "application/x-www-form-urlencoded",
+                    "params": {
+                        "Status": "completed"
+                    },
+                    "evals": {
+                        "success": "response.notFail",
+                        "data": "response.json.sms_messages"
+                    }
+                }
+            },
+            "call_in" : {
+                "READ_INITIAL_SYNC, READ_NEW" : {
+                    "method": "GET", "url": "Calls.json", "contentType": "application/x-www-form-urlencoded",
+                    "params": {
+                        "Status": "completed"
+                    },
+                    "evals": {
+                        "success": "response.notFail",
+                        "data": "response.json.calls"
+                    }
+                }
+            },
+            "send_sms" : {
+                "CREATE" : {
+                    "method": "POST", "url": "SMS/Messages.json", "contentType": "application/x-www-form-urlencoded",
+                    "params": {
+                        "From": "${message.from}",
+                        "To": "${message.to}",
+                        "Body": "${message.body}"
+                    },
+                    "evals": {
+                        "success": "response.json.status == 'queued'"
+                    }
+                }
+            },
+            "make_phone" : {
+                "CREATE" : {
+                    "method": "POST", "url": "Calls.json", "contentType": "application/x-www-form-urlencoded",
+                    "params": {
+                        "From": "${message.from}",
+                        "To": "${message.to}",
+                        "Url": "${message.url}",
+                        "ApplicationSid": "${message.applicationSid}"
+                    },
+                    "evals": {
+                        "success": "response.json.status == 'queued'"
+                    }
+                }
+            }
+        }
+    },
+    "components": [
+        {
+            "name": "twilio",
+            "displayName": "Twilio",
+            "whatitdoes": "Listen for events in Twilio.",
+            "type": "InputConnector",
+            "category": "messaging",
+            "runtime": "com.foxweave.connector.http.SaaSInputConnector",
+            "smalllogo": "ui/images/favicon.png",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/input-connector-help.html",
+            "configUI": {
+                "html": "ui/input-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "twilio",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-twilio-0.1.jar"
+                }
+            ]
+        },
+        {
+            "name": "twilio",
+            "displayName": "Twilio",
+            "whatitdoes": "Send SMS messages through Twilio.",
+            "type": "OutputConnector",
+            "category": "messaging",
+            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
+            "smalllogo": "ui/images/favicon.png",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/output-connector-help.html",
+            "configUI": {
+                "html": "ui/output-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "twilio",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-twilio-0.1.jar"
+                }
+            ]
+        }
+    ]
+}

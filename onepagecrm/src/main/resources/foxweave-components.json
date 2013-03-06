@@ -13,7 +13,6 @@
                 "apiDocs": "http://www.onepagecrm.com/api/api-doc-for-dev-contacts.html",
                 "postInputTransformer": "com.foxweave.onepagecrm.ContactPostInputTransformer",
                 "preOutputTransformer": "com.foxweave.onepagecrm.ContactPreOutputTransformer",
-                "operations": {"create":true},
                 "fields" : [
                     {"name": "id", "label": "ID", "hint": "Contact ID", "provideOn": {"create": "exclude"}},
                     {"name": "firstname", "label": "First Name", "hint": "Contact firstname"},
@@ -39,7 +38,10 @@
                     		{"name": "next", "label": "Next", "hint": "Action is next flag"}
                         ]
                     }
-                ]
+                ],
+                "syncCache" : {
+                    "keyField": "id"
+                }
             }
         }
     },
@@ -84,9 +86,6 @@
             "configUI": {
                 "html": "ui/connector-ui.html",
                 "viewJs": "ui/connector.js"
-            },
-            "syncCache" : {
-                "keyField": "id"
             },
             "supportsMigrate": true,
             "deps": [

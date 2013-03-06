@@ -16,11 +16,11 @@ subprojects {
     project.version = '0.1';
 
     repositories {
+        mavenLocal()
         maven {
             url "http://maven.foxweave.com/releases/"
         }
         mavenCentral()
-        mavenLocal()
     }
 
     configurations {

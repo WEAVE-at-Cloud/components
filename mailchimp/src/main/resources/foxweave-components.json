@@ -29,7 +29,7 @@
                             "create": "mandatory"
                         }
                     },
-                    {"name":"double_optin","label":"Double Opt-In", "defaultVal": "true",
+                    {"name":"double_optin","label":"Double Opt-In", "defaultVal": "false",
                         "values": [
                             {"value": "true", "label": "Yes"},
                             {"value": "false", "label": "No"}
