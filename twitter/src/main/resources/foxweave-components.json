@@ -1,0 +1,156 @@
+{
+    "displayName": "Twitter",
+    "smalllogo": "ui/images/favicon.ico",
+    "largelogo": "ui/images/largelogo.png",
+    "authDescriptor" : {
+        "title": "Twitter Account",
+        "authType": "OAuth1a",
+        "accountNameField": "screen_name"
+    },
+    "dataModel": {
+        "objects": {
+            "tweet_read": {
+                "label": "Read Tweet Object",
+                "display": "none",
+                "fields" : [
+                    {"name": "id", "label": "Unique Id", "hint": "Unique Id of the Tweet."},
+                    {"name": "created_at", "label": "Created At", "hint": "Created at Date and Time."},
+                    {"name": "text", "label": "Text", "hint": "The text content of the Tweet."},
+                    {"name": "user", "label": "Poster", "hint": "The user who posted the Tweet.",
+                        "fields" : [
+                            {"name": "id", "label": "Unique Id", "hint": "Unique Id of the User."},
+                            {"name": "name", "label": "Full Name", "hint": "Full name of the Tweet poster."},
+                            {"name": "screen_name", "label": "Screen Name", "hint": "Screen Name of the Tweet poster."}
+                        ]
+                    }
+                ]
+            },
+            "home_timeline": {
+                "label": "Home Timeline",
+                "display": "InputConnector",
+                "extends" : "tweet_read",
+                "hint": "Tweets and retweets posted by the user and the users they follow."
+            },
+            "user_timeline": {
+                "label": "Tweets by Me",
+                "display": "InputConnector",
+                "extends" : "tweet_read",
+                "hint": "Tweets posted by the user."
+            },
+            "mentions_timeline": {
+                "label": "Mentions of Me",
+                "display": "InputConnector",
+                "extends" : "tweet_read",
+                "hint": "Mentions (tweets containing a users's @screen_name) for the user."
+            },
+            "retweets_of_me": {
+                "label": "Retweets of Me",
+                "display": "InputConnector",
+                "extends" : "tweet_read",
+                "hint": "Tweets authored by the user that have recently been retweeted by others."
+            },
+            "tweet_write": {
+                "label": "POST Tweet",
+                "display": "OutputConnector",
+                "hint": "POST a tweet.",
+                "fields" : [
+                    {"name": "text", "label": "Tweet Text", "type": "textarea", "class": "input-xxlarge", "hint": "The text content of the Tweet.",
+                        "provideOn": {"create": "mandatory"}
+                    }
+                ]
+            }
+        }
+    },
+    "httpDescriptor" : {
+        "baseUrl" : "https://api.twitter.com/1.1/",
+        "contentType": "application/json",
+        "objOperations" : {
+            "*" : {
+                "READ_INITIAL_SYNC, READ_NEW" : {
+                    "method": "GET", "url": "statuses/${objectName}.json",
+                    "params": {
+                        "since_id": "${lastMessage.id}"
+                    },
+                    "evals": {
+                        "success": "response.notFail",
+                        "data": "response.json"
+                    }
+                }
+            },
+            "tweet_write" : {
+                "CREATE" : {
+                    "method": "POST", "url": "statuses/update.json", "contentType": "application/x-www-form-urlencoded",
+                    "params": {
+                        "status": "${message.text}"
+                    },
+                    "evals": {
+                        "success": "response.notFail"
+                    }
+                }
+            }
+        }
+    },
+    "components": [
+        {
+            "name": "twitter",
+            "displayName": "Twitter",
+            "whatitdoes": "Listen for events on Twitter.",
+            "type": "InputConnector",
+            "category": "social",
+            "runtime": "com.foxweave.connector.http.SaaSInputConnector",
+            "poll_interval": 300000,
+            "smalllogo": "ui/images/favicon.ico",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/input-connector-help.html",
+            "allowedTargets": ["FOXWEAVE"],
+            "configUI": {
+                "html": "ui/input-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "twitter",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-twitter-0.1.jar"
+                }
+            ]
+        },
+        {
+            "name": "twitter",
+            "displayName": "Twitter",
+            "whatitdoes": "Post status updates on Twitter.",
+            "type": "OutputConnector",
+            "category": "social",
+            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
+            "smalllogo": "ui/images/favicon.ico",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/output-connector-help.html",
+            "allowedTargets": ["FOXWEAVE"],
+            "configUI": {
+                "html": "ui/output-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "twitter",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-twitter-0.1.jar"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,3 @@
+dependencies {
+    compile ("com.foxweave:foxweave-abstract-components-http:${foxweaveVersion}");
+}

@@ -1,0 +1,3 @@
+$.foxweave.addComponentView(function() {
+
+});
