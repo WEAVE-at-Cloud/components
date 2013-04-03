@@ -1,0 +1,47 @@
+{
+    "displayName": "Cloudant",
+    "smalllogo": "ui/images/smalllogo.png",
+    "largelogo": "ui/images/largelogo.png",
+    "authDescriptor": {
+        "title": "Cloudant Account",
+        "params": {
+            "accountName": {
+                "displayIndex": 1,
+                "label": "Account Username",
+                "hint": "Cloudant Account Username"
+            },
+            "password": {
+                "displayIndex": 2,
+                "label": "Account Password",
+                "type": "password",
+                "hint": "Cloudant Account Username."
+            }
+        }
+    },
+    "components": [
+        {
+            "name": "cloudant",
+            "displayName": "Cloudant",
+            "whatitdoes": "Output JSON Documents to the Cloudant Cloud Document Database.",
+            "category": "database",
+            "type": "OutputConnector",
+            "runtime": "com.foxweave.connector.cloudant.CloudantOutputConnector",
+            "smalllogo": "ui/images/smalllogo.png",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/output-connector-help.html",
+            "configUI": {
+                "html": "ui/output-connector-ui.html",
+                "configJs": "scripts/component-config/PROPERTIES.js",
+                "viewJs": "ui/input-connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "cloudant",
+                    "version": "0.1",
+                    "fileName": "/lib/foxweave-components-cloudant-0.1.jar"
+                }
+            ]
+        }
+    ]
+}

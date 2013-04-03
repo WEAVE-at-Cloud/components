@@ -42,6 +42,8 @@ subprojects {
         testCompile group: 'com.foxweave', name: 'foxweave-testutil', version: project.foxweaveVersion
     }
 
+    sourceSets.main.compileClasspath += configurations.provided + configurations.component
+
     install {
         repositories.mavenInstaller {
             pom.whenConfigured { pom ->
