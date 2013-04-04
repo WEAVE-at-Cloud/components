@@ -31,7 +31,8 @@
                 "displayIndex": 5,
                 "label" : "Password",
                 "type": "password",
-                "hint": "PostgresSQL Host Account Password."
+                "hint": "PostgresSQL Host Account Password.",
+                "required": false
             },
             "driver": {
                 "displayIndex": 6,

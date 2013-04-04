@@ -36,7 +36,8 @@
                 "displayIndex": 6,
                 "label" : "Password",
                 "type": "password",
-                "hint": "Oracle Host Account Password."
+                "hint": "Oracle Host Account Password.",
+                "required": false
             },
             "driver": {
                 "displayIndex": 7,

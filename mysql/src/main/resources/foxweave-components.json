@@ -31,7 +31,8 @@
                 "displayIndex": 5,
                 "label" : "Password",
                 "type": "password",
-                "hint": "MySQL Host Account Password."
+                "hint": "MySQL Host Account Password.",
+                "required": false
             },
             "driver": {
                 "displayIndex": 6,
