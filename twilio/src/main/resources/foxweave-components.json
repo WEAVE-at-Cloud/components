@@ -198,6 +198,7 @@
             "smalllogo": "ui/images/favicon.png",
             "largelogo": "ui/images/largelogo.png",
             "help": "ui/help/input-connector-help.html",
+            "supportsManualTrigger": true,
             "configUI": {
                 "html": "ui/input-connector-ui.html",
                 "viewJs": "ui/connector.js"

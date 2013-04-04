@@ -6,7 +6,6 @@
 package com.foxweave.connector.cloudant;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 
 import com.foxweave.codec.Base64Coder;
 import com.foxweave.data.component.ConfigUtil;
@@ -21,7 +20,6 @@ import com.foxweave.pipeline.component.listener.ExchangeLifecycleListener;
 import com.foxweave.pipeline.exchange.Exchange;
 import com.foxweave.pipeline.exchange.Message;
 import com.foxweave.pipeline.lifecycle.Configurable;
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
@@ -129,8 +127,7 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
         }
 
         if (batchFile.exists() && batchFile.length() >= maxBatchSize) {
-            String location = sendBatch();
-            message.setPayload(location);
+            sendBatch();
         }
 
         FileOutputStream batchFileOS = new FileOutputStream(batchFile, true);
@@ -152,9 +149,9 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
         return message;
     }
 
-    private String sendBatch() throws FoxWeaveException, URIException {
+    private void sendBatch() throws FoxWeaveException, URIException {
         if (!batchFile.exists()) {
-            return null;
+            return;
         }
 
         StringBuilder messageBuilder = new StringBuilder();
@@ -166,7 +163,6 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
             e.printStackTrace();
         }
 
-        String location;
         PostMethod postMethod = new PostMethod();
         try {
             FileRequestEntity requestEntity = new FileRequestEntity(batchFile, "application/json") {
@@ -188,8 +184,7 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
             postMethod.setRequestEntity(requestEntity);
             httpClient.executeMethod(postMethod);
 
-            if (postMethod.getStatusCode() == HttpURLConnection.HTTP_CREATED) {
-                location = getLocation(postMethod);
+            if (postMethod.getStatusCode() >= 200 && postMethod.getStatusCode() < 300) {
                 batchFile.delete();
             } else {
                 throw new FoxWeaveException("Response from '" + requestURI.getURI() + "' was " + postMethod.getStatusCode() + " " + postMethod.getResponseBodyAsString() + ".");
@@ -199,14 +194,5 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
         } finally {
             postMethod.releaseConnection();
         }
-        return location;
-    }
-
-    private String getLocation(final PostMethod postMethod) {
-        final Header location = postMethod.getResponseHeader("Location");
-        if (location != null) {
-            return location.getValue();
-        }
-        return null;
     }
 }

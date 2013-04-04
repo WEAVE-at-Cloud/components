@@ -53,6 +53,7 @@
         "largelogo": "ui/images/largelogo.jpg",
         "allowedTargets": ["PAAS", "ONPREMISE"],
         "supportsMigrate": true,
+        "supportsManualTrigger": true,
         "help": "ui/help/input-connector-help.html",
         "configUI": {
             "html": "ui/connector-ui.html",

@@ -103,6 +103,7 @@
             "largelogo": "ui/images/largelogo.png",
             "help": "ui/help/input-connector-help.html",
             "allowedTargets": ["FOXWEAVE"],
+            "supportsManualTrigger": true,
             "configUI": {
                 "html": "ui/input-connector-ui.html",
                 "viewJs": "ui/connector.js"

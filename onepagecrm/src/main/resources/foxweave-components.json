@@ -88,6 +88,7 @@
                 "viewJs": "ui/connector.js"
             },
             "supportsMigrate": true,
+            "supportsManualTrigger": true,
             "deps": [
                 {
                     "groupId": "com.foxweave.connector",
