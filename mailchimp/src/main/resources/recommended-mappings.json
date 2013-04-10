@@ -43,6 +43,45 @@
                     "to": "email_address"
                 }
             ]
+        },
+        {
+            "from": {
+                "componentName": "zendesk:zendesk",
+                "objectName": "user",
+                "label": "user"
+            },
+            "to": {
+                "componentName": "mailchimp:mailchimp",
+                "objectName": "listSubscribe",
+                "label": "listSubscribe"
+            },
+            "model": [
+                {
+                    "from": "${name?word_list[0]}",
+                    "to": "FNAME",
+                    "template": "${name?word_list[0]}"
+                },
+                {
+                    "from": "${name?word_list[1]}",
+                    "to": "LNAME",
+                    "template": "${name?word_list[1]}"
+                },
+                {
+                    "from": "${email}",
+                    "to": "email_address",
+                    "template": "${email}"
+                },
+                {
+                    "from": "false",
+                    "to": "double_optin",
+                    "template": "false"
+                },
+                {
+                    "from": "false",
+                    "to": "send_welcome",
+                    "template": "false"
+                }
+            ]
         }
     ]
 }
