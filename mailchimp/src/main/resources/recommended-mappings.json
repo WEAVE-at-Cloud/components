@@ -48,38 +48,28 @@
             "from": {
                 "componentName": "zendesk:zendesk",
                 "objectName": "user",
-                "label": "user"
+                "label": "User"
             },
             "to": {
                 "componentName": "mailchimp:mailchimp",
                 "objectName": "listSubscribe",
-                "label": "listSubscribe"
+                "label": "List Subscriber"
             },
             "model": [
                 {
-                    "from": "${name?word_list[0]}",
+                    "from": "name",
                     "to": "FNAME",
                     "template": "${name?word_list[0]}"
                 },
                 {
-                    "from": "${name?word_list[1]}",
+                    "from": "name",
                     "to": "LNAME",
                     "template": "${name?word_list[1]}"
                 },
                 {
-                    "from": "${email}",
+                    "from": "email",
                     "to": "email_address",
                     "template": "${email}"
-                },
-                {
-                    "from": "false",
-                    "to": "double_optin",
-                    "template": "false"
-                },
-                {
-                    "from": "false",
-                    "to": "send_welcome",
-                    "template": "false"
                 }
             ]
         }
