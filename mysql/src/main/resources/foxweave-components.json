@@ -14,7 +14,7 @@
                 "displayIndex": 2,
                 "label" : "Host",
                 "value": "",
-                "hint": "MySQL Host Name or IP Address. This is the host name relevant to where the Integration Application App will be run."
+                "hint": "MySQL Host Name or IP Address. This is the host name relative to where the Integration Application App will be run."
             },
             "port": {
                 "displayIndex": 3,

@@ -1,0 +1,57 @@
+SqlServer is a Relational Database provided by Microsoft. <a href="http://www.foxweave.com/apps-and-dbs/sqlserver/">See online docs for more details (and demos)</a>.
+<p/>
+Configuring the SQL Server input connector is quite simple:
+<ol>
+    <li>Select the <strong>SqlServer Server</strong> (press the <img src="/images/add.png"/> button to add an account, if needed).</li>
+    <li>Enter the name of the <strong>Database</strong> from which you wish to synchronize data.</li>
+    <li>Enter the <strong>SQL Statement</strong> i.e. a <code>select</code> statement (see Examples below).</li>
+</ol>
+
+<div class="alert alert-info">
+    <strong>Tip:</strong> When creating a <strong>SqlServer Server</strong> (after pressing the <img src="/images/add.png"/> button),
+    do NOT enter a local loopback address ("localhost" or "127.0.0.1") as the SqlServer Server <strong>Host</strong> name/IP.  Remember that this SqlServer Server <strong>Host</strong>
+    address needs to be resolvable on the FoxWeave target on which you chose to start/run the integration i.e. on an
+    <a href="http://www.foxweave.com/integration-runtime-options/">On-Premise or On-PaaS</a> host machine.
+</div>
+
+<h4>'select' Statement Syntax</h4>
+The most important thing to remember about the syntax of the <code>select</code> statement is to include the <code>#</code>
+markers:
+<ol>
+    <li><code>#</code>: Use a single hash to mark the queried fields.</li>
+    <li><code>##</code>: Use a double hash to mark the parameter values in the <code>where</code> (see next section).</li>
+</ol>
+<p/>
+Example: <code>select #id, #fname, #lname, #email from subscriptions where id > ##id</code>
+<p/>
+
+<h4>'where' Clause</h4>
+Be carefull when constructing the <code>where</code> clause.  This is especially important when creating a synchronization
+application (see <a href="http://www.foxweave.com/synchronization-vs-migration/">Synchronization Vs Migration</a>).
+<p/>
+An important roll played by the <code>where</code> clause is that of allowing FoxWeave restart a sync process after a given
+poll interval i.e. to check for new records added since the last poll.  In order to do this, the <code>where</code> clause
+needs to include checks on one or more "<i>sync fields</i>" e.g. a unique incrementing Id field, or a date field.  The values
+for these field checks come from the <strong>previous record</strong> sync'd from the DB table in question (using appropriate
+defaults for the first sync).  You identify the value from the previous record by using a double hash (<code>##</code>) and
+the field name in the <code>where</code> clause.
+<p/>
+For example, in a DB table where all new records have a incremented id value, you can check for (and sync) all new records
+by querying for records where the id value is greater than the id value of the last record sync:
+<p/>
+Example: <code>select #id, #fname, #lname, #email from subscriptions where id > ##id</code>
+<p/>
+See the next section for more examples.
+
+<h4>Examples</h4>
+Query for records where the id value is greater than the id value of the last record sync:
+<p/>
+Example: <code>select #id, #fname, #lname, #email from subscriptions where id > ##id</code>
+<p/>
+Query for records where the id value is greater than the id value of the last record sync, and 'date_created' is within the last day:
+<p/>
+Example: <code>select #id, #fname, #lname, #email, #date_created from subscriptions where id > ##id and DATE_SUB(CURDATE(),INTERVAL 1 DAY) <= date_created</code>
+<p/>
+Query across multiple tables (join):
+<p/>
+Example: <code>select #t.id, #t.col1, #t.col2, #t.col3, #t.col4, #t.col5, #t.col6, #f.theval from testdata_tbl t, foreign_tbl f where t.id > ##t.id and t.forkey = f.id</code>

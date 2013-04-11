@@ -1,60 +1,61 @@
 {
-    "displayName": "Oracle",
-    "smalllogo": "ui/images/smalllogo.png",
+    "displayName": "MS SQL Server",
+    "smalllogo": "ui/images/smalllogo.ico",
     "largelogo": "ui/images/largelogo.png",
     "authDescriptor" : {
-        "title": "Oracle Server",
+        "title": "SqlServer Server",
         "params" : {
             "accountName": {
                 "displayIndex": 1,
                 "label" : "Server Name",
-                "hint": "The name you would like to use to refer to this Oracle Server instance."
+                "hint": "The name you would like to use to refer to this SqlServer Server instance."
             },
             "host": {
                 "displayIndex": 2,
                 "label" : "Host",
                 "value": "",
-                "hint": "Oracle Host Name or IP Address. This is the host name relative to where the Integration Application App will be run."
+                "hint": "SqlServer Host Name or IP Address. This is the host name relative to where the Integration Application App will be run."
             },
             "port": {
                 "displayIndex": 3,
                 "label" : "Port",
-                "value": "1521",
-                "hint": "Oracle Host Port Number."
+                "value": "1433",
+                "hint": "SqlServer Host Port Number."
             },
-            "service": {
+            "domain": {
                 "displayIndex": 4,
-                "label" : "SID/Service Name",
-                "hint": "Database SID/Service name. You can find the this in the Database tnsnames.ora file."
+                "label" : "Domain",
+                "hint": "SqlServer Host Account Windows Domain.",
+                "required": false
             },
             "username": {
                 "displayIndex": 5,
                 "label" : "Username",
-                "hint": "Oracle Host Account Username."
+                "hint": "SqlServer Host Account Username."
             },
             "password": {
                 "displayIndex": 6,
                 "label" : "Password",
                 "type": "password",
-                "hint": "Oracle Host Account Password.",
+                "hint": "SqlServer Host Account Password.",
                 "required": false
             },
             "driver": {
                 "displayIndex": 7,
                 "type": "hidden",
-                "value": "oracle.jdbc.OracleDriver"
+                "value": "net.sourceforge.jtds.jdbc.Driver"
             }
         }
     },
     "components": [
     {
-        "name": "oracle11g",
-        "displayName": "Oracle 11g",
-        "whatitdoes": "Receive notification of new/updated records added to an Oracle Database.",
+        "name": "sqlserver",
+        "displayName": "MS SQL Server",
+        "whatitdoes": "Receive notification of new/updated records added to a MS SQL Server Database.",
         "category": "database",
         "type": "InputConnector",
         "runtime": "com.foxweave.connector.rdb.input.RDBInputConnector",
-        "smalllogo": "ui/images/smalllogo.png",
+        "smalllogo": "ui/images/smalllogo.ico",
         "largelogo": "ui/images/largelogo.png",
         "allowedTargets": ["PAAS", "ONPREMISE"],
         "supportsMigrate": true,
@@ -73,26 +74,25 @@
             },
             {
                 "groupId": "com.foxweave.connector",
-                "artifactId": "oracle",
+                "artifactId": "sqlserver",
                 "version": "0.1",
-                "fileName": "/lib/foxweave-components-oracle-0.1.jar"
+                "fileName": "/lib/foxweave-components-sqlserver-0.1.jar"
             },
             {
-                "groupId": "com.oracle",
-                "artifactId": "driver",
-                "version": "5",
-                "fileName": "/lib/ojdbc5.jar"
+                "groupId": "net.sourceforge.jtds",
+                "artifactId": "jtds",
+                "version": "1.2.6"
             }
         ]
     },
     {
-        "name": "oracle11g",
-        "displayName": "Oracle 11g",
-        "whatitdoes": "Output/Update records to an Oracle Database.",
+        "name": "sqlserver",
+        "displayName": "MS SQL Server",
+        "whatitdoes": "Output/Update records to a MS SQL Server Database.",
         "category": "database",
         "type": "OutputConnector",
         "runtime": "com.foxweave.connector.rdb.output.RDBOutputConnector",
-        "smalllogo": "ui/images/smalllogo.png",
+        "smalllogo": "ui/images/smalllogo.ico",
         "largelogo": "ui/images/largelogo.png",
         "help": "ui/help/output-connector-help.html",
         "embedDataMapper": false,
@@ -109,15 +109,14 @@
             },
             {
                 "groupId": "com.foxweave.connector",
-                "artifactId": "oracle",
+                "artifactId": "sqlserver",
                 "version": "0.1",
-                "fileName": "/lib/foxweave-components-oracle-0.1.jar"
+                "fileName": "/lib/foxweave-components-sqlserver-0.1.jar"
             },
             {
-                "groupId": "com.oracle",
-                "artifactId": "driver",
-                "version": "5",
-                "fileName": "/lib/ojdbc5.jar"
+                "groupId": "net.sourceforge.jtds",
+                "artifactId": "jtds",
+                "version": "1.2.6"
             }
         ]
     }
