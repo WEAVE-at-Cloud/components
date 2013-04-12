@@ -106,7 +106,10 @@
                             {"value": "false", "label": "No"}
                         ]
                     }
-                ]
+                ],
+                "syncCache" : {
+                    "keyField": "id"
+                }
             },
             "ticket": {
                 "label": "Ticket",
@@ -167,7 +170,10 @@
                     {"name": "due_at", "label": "Due At", "hint": "If this is a ticket of type 'task' it has a due date. Due date format uses ISO 8601 format."},
                     {"name": "created_at", "label": "Created At", "hint": "When this record was created", "provideOn": {"create": "exclude"}},
                     {"name": "updated_at", "label": "Updated At", "hint": "When this record last got updated", "provideOn": {"create": "exclude"}}
-                ]
+                ],
+                "syncCache" : {
+                    "keyField": "id"
+                }
             }
         }
     },
@@ -194,18 +200,16 @@
                 "READ_NEW" : {
                     "method": "GET",
                     "url": "/api/v2/search.json",
-                    "requestDecorator": "com.foxweave.connector.zendesk.CreatedAfterPaginatedRequestDecorator",
-                    "transformer": "com.foxweave.connector.zendesk.AlreadySyncdFilteringTransformer",
                     "params": {
-                        "query": "type:${objectName} created>${lastMessage.created_at}",
+                        "page": "${pageNum}",
+                        "per_page": 10,
+                        "query": "type:${objectName}",
                         "sort_by": "created_at",
-                        "sort_order": "asc",
-                        "per_page": 10
+                        "sort_order": "desc"
                     },
                     "evals": {
                         "success": "response.notFail && response.json.count != 0",
-                        "data": "response.json.results",
-                        "nextPage": "response.json.next_page"
+                        "data": "response.json.results"
                     }
                 },
                 "READ_ALL" : {
