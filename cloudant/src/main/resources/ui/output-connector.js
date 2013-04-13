@@ -1,18 +1,18 @@
-$.foxweave.addComponentView(function(config, viewConfig) {
-    var datastoreProxy = viewConfig.datastoreProxy;
-    var dbname = $("input#cloudant_database_name");
-    var messageStructureRow = $("tr#cloudant_message_structure_row");
-    var messageStructureTextArea = $("textarea#cloudant_message_structure");
+$.foxweave.addComponentView(function() {
+    var component = this;
+    var dbname = $("#cloudant_database_name");
+    var messageStructureRow = $("#cloudant_message_structure_row");
+    var messageStructureTextArea = $("#cloudant_message_structure");
 
-    $('#authAccountSelector').change(function() {
-        if ($(this).val() !== '') {
-            config['cloudant_server_url'] = 'https://' + viewConfig.accountSelected.accountName + '.cloudant.com/';
+    component.onAccountChanged(function() {
+        if (component.accountSelected !== undefined && component.accountSelected.accountName !== undefined) {
+            component.config('cloudant_server_url', 'https://' + component.accountSelected.accountName + '.cloudant.com/');
         } else {
-            config['cloudant_server_url'] = '';
+            component.config('cloudant_server_url', '');
         }
     });
 
-    $("input#cloudant_database_name").change(function() {
+    dbname.change(function() {
         messageStructureTextArea.val('');
         getDocumentStructure();
     });
@@ -27,12 +27,12 @@ $.foxweave.addComponentView(function(config, viewConfig) {
     function getDocumentStructure() {
         var updated = false;
 
-        if (viewConfig.accountSelected !== '' && dbname.val() !== '') {
+        if (component.accountSelected !== '' && dbname.val() !== '') {
             if (messageStructureTextArea.val() === '') {
                 function getCloudant(resource) {
                     var url =
-                        '/commons/php/httpget.php?url=' + encodeURIComponent('https://' + encodeURIComponent(viewConfig.accountSelected.accountName) +
-                        ':' + encodeURIComponent(viewConfig.accountSelected.password) + '@' + encodeURIComponent(viewConfig.accountSelected.accountName) +
+                        '/commons/php/httpget.php?url=' + encodeURIComponent('https://' + encodeURIComponent(component.accountSelected.accountName) +
+                        ':' + encodeURIComponent(component.accountSelected.password) + '@' + encodeURIComponent(component.accountSelected.accountName) +
                         '.cloudant.com/' + dbname.val() + '/' + resource);
 
                     return $.foxweave.getSync(url, 'json', false);
@@ -53,7 +53,7 @@ $.foxweave.addComponentView(function(config, viewConfig) {
                         messageStructureTextArea.val(stringifiedJson);
                         messageStructureTextArea.removeClass('invalidInput');
                         messageStructureRow.show();
-                        datastoreProxy.consumes(jsonDoc);
+                        component.consumes(jsonDoc);
                         updated = true;
                     }
                 }
@@ -61,7 +61,7 @@ $.foxweave.addComponentView(function(config, viewConfig) {
         }
 
         if (!updated) {
-            datastoreProxy.consumes({});
+            component.consumes({});
         }
     }
 
@@ -69,11 +69,11 @@ $.foxweave.addComponentView(function(config, viewConfig) {
         try {
             var jsonObj = JSON.parse(jsonDoc);
             if (jsonObj !== undefined) {
-                datastoreProxy.consumes(jsonObj);
+                component.consumes(jsonObj);
             }
             return true;
         } catch (e) {
-            datastoreProxy.consumes({});
+            component.consumes({});
             return false;
         }
     }
@@ -84,10 +84,10 @@ $.foxweave.addComponentView(function(config, viewConfig) {
 
     var use_previous_produces = $('#use_previous_produces');
     use_previous_produces.click(function() {
-        var previousProduces = datastoreProxy.previousProduces();
+        var previousProduces = component.previousProduces();
         previousProduces = $.foxweave.flattenMessageModel(previousProduces);
         previousProduces = $.foxweave.toSampleMessage(previousProduces);
-        $.foxweave.mapSameNameFields(previousProduces, previousProduces, config);
+        $.foxweave.mapSameNameFields(previousProduces, previousProduces, component.configObj);
         $('#cloudant_message_structure').val(JSON.stringify(previousProduces, undefined, 2));
     });
     use_previous_produces.tooltip();

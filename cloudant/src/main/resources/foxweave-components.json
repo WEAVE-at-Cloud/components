@@ -32,7 +32,7 @@
             "configUI": {
                 "html": "ui/output-connector-ui.html",
                 "configJs": "scripts/component-config/PROPERTIES.js",
-                "viewJs": "ui/input-connector.js"
+                "viewJs": "ui/output-connector.js"
             },
             "deps": [
                 {
