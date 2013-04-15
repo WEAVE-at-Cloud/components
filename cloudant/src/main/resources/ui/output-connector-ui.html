@@ -10,23 +10,25 @@
             DB Name
         </td>
         <td>
-            <input value=""
-                   class="validate[required] text-input"
-                   type="text"
-                   id="cloudant_database_name"
-                   title="The name of the Cloudant Document Database into which documents will be put" />
+            <select id="cloudant_database_name" class="validate[required] text-input"
+                    title="The name of the Cloudant Document Database into which documents will be put" />
         </td>
     </tr>
     <tr id="cloudant_message_structure_row">
         <td class="fieldName">
-            DB Document Structure
+            DB Document Structure<br/>
         </td>
         <td>
-            <textarea value="" class="validate[required] text-input input-xxlarge consumes trigChangeOnVal"
-                      title="The structure of the JSON document in the target Cloudant Document Database"
-                      id="cloudant_message_structure"
-                      rows="10"/>
-            <a id="use_previous_produces" href="#" title="Use the input message structure as the format for this component.">Use Input</a>
+            <div id="cloudant_message_structure_div" style="position: relative">
+                <textarea value="" class="validate[required] text-input input-xxlarge trigChangeOnVal"
+                          title="The structure of the JSON document in the target Cloudant Document Database"
+                          id="cloudant_message_structure"
+                          rows="10"/>
+                <div class="btn-group" data-toggle="buttons-checkbox" style="position: absolute; top: 10px; right: 20px">
+                    <button type="button" class="btn btn-mini" id="use_previous_produces" title="Use the input message structure as the format of the Cloudant Document.">Use Input</button>
+                    <button type="button" class="btn btn-mini" id="use_cloudant_existing" title="Use the selected Cloudant DB message structure as the format of the Cloudant Document.">Use Cloudant</button>
+                </div>
+            </div>
         </td>
     </tr>
     <input value="application/json" class="validate[required] text-input" type="hidden" id="cloudant_put_contentType" />
