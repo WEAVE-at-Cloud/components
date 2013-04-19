@@ -88,7 +88,7 @@ $.foxweave.addComponentView(function() {
     use_previous_produces.click(function() {
         component.consumes(component.previousProduces());
         component.mapSameNameFields();
-        messageStructureTextArea.val(JSON.stringify(component.toSampleMessage(component.previousProduces()), undefined, 2));
+        messageStructureTextArea.val(JSON.stringify(component.toSampleMessage(component.previousProduces()), undefined, 4));
     });
     use_previous_produces.tooltip();
 
