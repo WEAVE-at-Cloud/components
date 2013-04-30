@@ -1,6 +1,7 @@
 project.ext.set("foxweaveVersion", "0.1")
 project.ext.set("slf4jVersion", "1.6.4")
 
+apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 subprojects {

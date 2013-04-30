@@ -1,0 +1,5 @@
+apply plugin: 'eclipse'
+dependencies {
+    compile ("com.foxweave:foxweave-abstract-components-http:${foxweaveVersion}");
+    }
+apply plugin: 'eclipse'
