@@ -58,6 +58,32 @@
                     "to": "work_email"
                 }
             ]
+        },
+        {
+            "from": {
+                "componentName": "zohocrm:zohocrm",
+                "objectName": "Leads",
+                "label": "Lead"
+            },
+            "to": {
+                "objectName": "contact",
+                "label": "Contact"
+            },
+            "model": [
+                {"from": "First_Name", "to": "firstname"},
+                {"from": "Last_Name", "to": "lastname"},
+                {"from": "Company", "to": "company"},
+                {"from": "Phone", "to": "work_phone"},
+                {"from": "Email", "to": "work_email"},
+                {"from": "Secondary_Email", "to": "home_email"},
+                {"from": "Designation", "to": "job_title"},
+                {"from": "Street", "to": "address"},
+                {"from": "City", "to": "city"},
+                {"from": "State", "to": "state"},
+                {"from": "Zip_Code", "to": "zip_code"},
+                {"from": "Country", "to": "country"},
+                {"from": "Description", "to": "description"}
+            ]
         }
     ]
 }

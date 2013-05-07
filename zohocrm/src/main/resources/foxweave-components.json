@@ -19,7 +19,7 @@
     },
      "dataModel": {
         "objects": {
-            "lead": {
+            "Leads": {
                 "label": "Leads",
                 "apiDocs": "http://www.zoho.com/crm/help/api/getmyrecords.html",
                 "operations": {"create":true},
@@ -27,7 +27,7 @@
                 "fields": [
                     {"name": "LEADID", "label": "Lead ID", "hint": "Automatically assigned when creating lead", "provideOn": {"create": "exclude"}},
                     {"name": "SMOWNERID", "label": "Owner ID", "hint": "Automatically assigned when creating lead", "provideOn": {"create": "exclude"}},
-                    {"name": "Lead Owner", "label": "Lead Owner", "hint": "Automatically assigned when creating lead", "provideOn": {"create": "Mandatory"}},
+                    {"name": "Lead_Owner", "label": "Lead Owner", "hint": "Automatically assigned when creating lead", "provideOn": {"create": "Mandatory"}},
                     {"name": "Company", "label": "Company", "hint": "Organization Lead works for", "provideOn": {"create": "Mandatory"}},
                     {"name": "First_Name", "label": "First Name", "hint": "Lead's first name", "provideOn": {"create": "optional"}},
                     {"name": "Last_Name", "label": "Last Name", "hint": "Lead's Last name", "provideOn": {"create": "Mandatory"}},
@@ -52,7 +52,7 @@
                     {"name": "Street", "label": "Street", "hint": "The street address of the Lead", "provideOn": {"create": "optional"}},
                     {"name": "City", "label": "City", "hint": "City where lead lives", "provideOn": {"create": "optional"}},
                     {"name": "State", "label": "State", "hint": "State where lead lives", "provideOn": {"create": "optional"}},
-                    {"name": "Zip Code", "label": "Zip Code", "hint": "The Lead's Zip Code", "provideOn": {"create": "optional"}},
+                    {"name": "Zip_Code", "label": "Zip Code", "hint": "The Lead's Zip Code", "provideOn": {"create": "optional"}},
                     {"name": "Country", "label": "Country", "hint": "Country where Lead lives", "provideOn": {"create": "optional"}},
                     {"name": "Description", "label": "Description", "hint": "An area where you can define important notes aout the Lead", "provideOn": {"create": "optional"}},
                     {"name": "Skype_ID", "label": "Skype ID", "hint": "Lead's Skype ID", "provideOn": {"create": "optional"}},
@@ -61,7 +61,10 @@
                     {"name": "Secondary_Email", "label": "Secondary Email", "hint": "Lead's Secondary Email", "provideOn": {"create": "optional"}},
                     {"name": "Last_Activity_Time", "label": "Last Activity Time", "hint": "The last time something hapened with the lead", "provideOn": {"create": "exclude"}},
                     {"name": "Twitter", "label": "Twitter", "hint": "Lead's Twitter name", "provideOn": {"create": "optional"}}
-                ]
+                ],
+                "syncCache" : {
+                    "keyField": "LEADID"
+                }
             },
 
         "Campaigns": {
@@ -88,7 +91,10 @@
                 {"name": "Created Time", "label": "Created Time", "hint": "Time and date of when campaign was created", "provideOn": {"create": "exclude"}},
                 {"name": "Modified Time", "label": "Modified Time", "hint": "The time and date of when the campaign was last edited", "provideOn": {"create": "exclude"}},
                 {"name": "Description", "label": "Description", "hint": "Description of the campaign", "provideOn": {"create": "optional"}}
-            ]
+            ],
+            "syncCache" : {
+                "keyField": "CAMPAIGNID"
+            }
         }
     }
 
@@ -101,21 +107,21 @@
             "*" : {
                  "READ_INITIAL_SYNC, READ_NEW" : {
                     "method": "GET",
-                    "url": "Leads/getMyRecords",
+                    "url": "${objectName}/getMyRecords",
                     "params": {
                         "authtoken": "${auth.apiKey}",
                         "scope": "crmapi"
                     },
                     "evals": {
                         "success": "response.notFail",
-                        "data": "response.json.response.result.Leads.row"
+                        "data": "response.json.response.result.${objectName}.row"
                     }
                 }
             },
             "insertRecords" : {
                 "CREATE" : {
                      "method": "POST",
-                     "url": "${objectName}/insertRecords?authtoken=${auth.apiKey&scope=crmapi&xmlData=${xmldata}",
+                     "url": "${objectName}/insertRecords?authtoken=${auth.apiKey}&scope=crmapi&xmlData=${xmldata}",
                       "params": { "apiKey": "${auth.apiKey}"},
                     "evals": {
                         "success": "response.body == 'true'"
@@ -129,16 +135,17 @@
     "components": [
         {
             "name": "zohocrm",
-            "displayName": "ZohoCRM",
-            "whatitdoes": "Create objects in zohoCRM, the popular Customer Relation Management System",
-            "type": "OutputConnector",
-            "category": "customer_support",
-            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
+            "displayName": "Zoho CRM",
+            "whatitdoes": "Retrieve CRM information from Zoho",
+            "type": "InputConnector",
+            "category": "crm_erp",
+            "runtime": "com.foxweave.connector.http.SaaSInputConnector",
             "smalllogo": "ui/images/favicon.ico",
             "largelogo": "ui/images/mc.png",
-            "help": "ui/help/output-connector-help.html",
+            "help": "ui/help/input-connector-help.html",
+            "supportsManualTrigger": true,
             "configUI": {
-                "html": "ui/output-connector-ui.html",
+                "html": "ui/input-connector-ui.html",
                 "viewJs": "ui/connector.js"
             },
             "deps": [
@@ -156,20 +163,18 @@
                 }
             ]
         },
-
-		{
+        {
             "name": "zohocrm",
-            "displayName": "Zoho CRM",
-            "whatitdoes": "Retrieve CRM information from Zoho",
-            "type": "InputConnector",
-            "category": "customer_support",
-            "runtime": "com.foxweave.connector.http.SaaSInputConnector",
+            "displayName": "ZohoCRM",
+            "whatitdoes": "Create objects in Zoho CRM, the popular Customer Relation Management System",
+            "type": "OutputConnector",
+            "category": "crm_erp",
+            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
             "smalllogo": "ui/images/favicon.ico",
             "largelogo": "ui/images/mc.png",
-            "help": "ui/help/input-connector-help.html",
-	    "supportsManualTrigger": true,
+            "help": "ui/help/output-connector-help.html",
             "configUI": {
-                "html": "ui/input-connector-ui.html",
+                "html": "ui/output-connector-ui.html",
                 "viewJs": "ui/connector.js"
             },
             "deps": [
