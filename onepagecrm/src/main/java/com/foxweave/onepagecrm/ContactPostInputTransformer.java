@@ -1,5 +1,6 @@
 package com.foxweave.onepagecrm;
 
+import com.foxweave.json.JSONUtil;
 import com.foxweave.pipeline.transform.PipelinePayloadTransformer;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,16 +17,33 @@ import java.util.Set;
  * provided by the OnePage API and into the structure defined in the module
  * descriptor (foxweave-components.json).
  */
-public class ContactPostInputTransformer implements PipelinePayloadTransformer {
+public class ContactPostInputTransformer<F, T> implements PipelinePayloadTransformer<String, JSONObject> {
 
     public static final Set<String> phoneTypes = new HashSet<String>(Arrays.asList("work", "home", "mobile"));
     public static final Set<String> emailTypes = new HashSet<String>(Arrays.asList("work", "home"));
 
+    private String objectName;
+
     @Override
-    public JSONObject transform(JSONObject payload) throws Exception {
-        transformPhones(payload);
-        transformEmails(payload);
-        return payload;
+    public void setObjectName(String objectName) {
+        this.objectName = objectName;
+    }
+
+    @Override
+    public JSONObject transform(String contactsAlaOnePage) throws Exception {
+        JSONObject contactsJsonResponse = new JSONObject(contactsAlaOnePage);
+        JSONArray contactsArray = (JSONArray) JSONUtil.getValue(contactsJsonResponse, "data", objectName + "s");
+
+        if (contactsArray != null) {
+            int numContacts = contactsArray.length();
+            for (int i = 0; i < numContacts; i++) {
+                JSONObject contact = contactsArray.getJSONObject(i);
+                transformPhones(contact);
+                transformEmails(contact);
+            }
+        }
+
+        return contactsJsonResponse;
     }
 
     private void transformPhones(JSONObject payload) {

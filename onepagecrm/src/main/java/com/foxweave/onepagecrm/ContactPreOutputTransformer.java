@@ -11,13 +11,17 @@ import org.json.JSONObject;
  * in the module descriptor (foxweave-components.json) and into the structure
  * required by the OnePage API.
  */
-public class ContactPreOutputTransformer implements PipelinePayloadTransformer {
+public class ContactPreOutputTransformer<F, T> implements PipelinePayloadTransformer<JSONObject, String> {
 
     @Override
-    public JSONObject transform(JSONObject payload) throws Exception {
-        transformPhones(payload);
-        transformEmails(payload);
-        return payload;
+    public void setObjectName(String s) {
+    }
+
+    @Override
+    public String transform(JSONObject contact) throws Exception {
+        transformPhones(contact);
+        transformEmails(contact);
+        return contact.toString();
     }
 
     private void transformPhones(JSONObject payload) {

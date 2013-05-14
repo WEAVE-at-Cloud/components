@@ -23,7 +23,8 @@
                 "label": "Leads",
                 "apiDocs": "http://www.zoho.com/crm/help/api/getmyrecords.html",
                 "operations": {"create":true},
-                "postInputTransformer": "com.foxweave.zohocrm.ZohoPayloadTransformer",
+                "postInputTransformer": "com.foxweave.zohocrm.ZohoInboundTransformer",
+                "preOutputTransformer": "com.foxweave.zohocrm.ZohoOutboundTransformer",
                 "fields": [
                     {"name": "LEADID", "label": "Lead ID", "hint": "Automatically assigned when creating lead", "provideOn": {"create": "exclude"}},
                     {"name": "SMOWNERID", "label": "Owner ID", "hint": "Automatically assigned when creating lead", "provideOn": {"create": "exclude"}},
@@ -65,49 +66,18 @@
                 "syncCache" : {
                     "keyField": "LEADID"
                 }
-            },
-
-        "Campaigns": {
-            "label": "Campaigns",
-            "operations": {"create":true},
-
-            "fields":[
-                {"name": "CAMPAIGNID", "label": "Campaign ID", "hint": "Automatically assigned when creating campaign", "provideOn": {"create": "exclude"}},
-                {"name": "SMOWNERID", "label": "Owner ID", "hint": "Automatically assigned when creating campaign", "provideOn": {"create": "exclude"}},
-                {"name": "Campaign Owner", "label": "Campaign Owner", "hint": "The User who created Campaign", "provideOn": {"create": "exclude"}},
-                {"name": "Type", "label": "Type", "hint": "Type of campaign to preform", "provideOn": {"create": "optional"}},
-                {"name": "Campaign Name", "label": "Campaign Name", "hint": "Name of the Campaign", "provideOn": {"create": "mandatory"}},
-                {"name": "Status", "label": "Status", "hint": "Status of the Campaign", "provideOn": {"create": "optional"}},
-                {"name": "Start Date", "label": "Lead ID", "hint": "State Date of the Campaign", "provideOn": {"create": "optional"}},
-                {"name": "End Date", "label": "End Date", "hint": "End date of the Campaign", "provideOn": {"create": "optional"}},
-                {"name": "Expected Revenue", "label": "Expected Revenue", "hint": "Expeced Revenue generated from the campaign", "provideOn": {"create": "optional"}},
-                {"name": "Budgeted Cost", "label": "Budgeted Cost", "hint": "The amount set aside to run the campaign", "provideOn": {"create": "optional"}},
-                {"name": "Actual Cost", "label": "Actual Cost", "hint": "The amount of money the campaign really cost", "provideOn": {"create": "optional"}},
-                {"name": "Expected Response", "label": "Expected Response", "hint": "Expected Response of the campaign", "provideOn": {"create": "optional"}},
-                {"name": "Num sent", "label": "Num sent", "hint": "Number X sent out to Leads", "provideOn": {"create": "optional"}},
-                {"name": "SMCREATORID", "label": "Creator ID", "hint": "Automatically assigned when creating campaign", "provideOn": {"create": "exclude"}},
-                {"name": "Created By", "label": "Created By", "hint": "Automatically assigned when creating campaign", "provideOn": {"create": "exclude"}},
-                {"name": "MODIFIEDBY", "label": "Modified By", "hint": "Automatically assigned when creating campaign", "provideOn": {"create": "exclude"}},
-                {"name": "Created Time", "label": "Created Time", "hint": "Time and date of when campaign was created", "provideOn": {"create": "exclude"}},
-                {"name": "Modified Time", "label": "Modified Time", "hint": "The time and date of when the campaign was last edited", "provideOn": {"create": "exclude"}},
-                {"name": "Description", "label": "Description", "hint": "Description of the campaign", "provideOn": {"create": "optional"}}
-            ],
-            "syncCache" : {
-                "keyField": "CAMPAIGNID"
             }
         }
-    }
-
     },
 
     "httpDescriptor" : {
-        "baseUrl" : "https://crm.zoho.com/crm/private/json/",
+        "baseUrl" : "https://crm.zoho.com/crm/private/",
         "contentType": "application/json",
         "objOperations" : {
             "*" : {
                  "READ_INITIAL_SYNC, READ_NEW" : {
                     "method": "GET",
-                    "url": "${objectName}/getMyRecords",
+                    "url": "json/${objectName}/getMyRecords",
                     "params": {
                         "authtoken": "${auth.apiKey}",
                         "scope": "crmapi"
@@ -116,20 +86,21 @@
                         "success": "response.notFail",
                         "data": "response.json.response.result.${objectName}.row"
                     }
-                }
-            },
-            "insertRecords" : {
-                "CREATE" : {
-                     "method": "POST",
-                     "url": "${objectName}/insertRecords?authtoken=${auth.apiKey}&scope=crmapi&xmlData=${xmldata}",
-                      "params": { "apiKey": "${auth.apiKey}"},
+                },
+                "CREATE": {
+                    "method": "POST", "PayloadLocation": "params",
+                    "url": "xml/${objectName}/insertRecords",
+                    "contentType": "text/xml",
+                    "params": {
+                        "authtoken": "${auth.apiKey}",
+                        "scope": "crmapi",
+                        "xmlData": "${message}"
+                    },
                     "evals": {
-                        "success": "response.body == 'true'"
+                        "success": "response.notFail"
                     }
                 }
             }
-
-
         }
     },
     "components": [
