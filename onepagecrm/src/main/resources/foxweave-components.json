@@ -59,8 +59,8 @@
                         "page": "${pageNum}"
                     },
                     "evals": {
-                        "success": "response.notFail",
-                        "data": "response.json.rows"
+                        "success": "response.notFail && response.json.status == 0",
+                        "data": "response.json.data.${objectName}s"
                     }
                 },
                 "CREATE" : {
