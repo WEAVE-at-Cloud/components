@@ -84,7 +84,7 @@
                     },
                     "evals": {
                         "success": "response.notFail",
-                        "data": "response.json.response.result.${objectName}.row"
+                        "data": "response.json.rows"
                     }
                 },
                 "CREATE": {
