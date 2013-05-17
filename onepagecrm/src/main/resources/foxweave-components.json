@@ -55,6 +55,7 @@
                     "url": "/api/${objectName}s.json",
                     "params": {
                         "newest": 1,
+                        "extended": 1,
                         "page": "${pageNum}"
                     },
                     "evals": {
