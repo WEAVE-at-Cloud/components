@@ -148,7 +148,7 @@
             },
             "call_in" : {
                 "READ_INITIAL_SYNC, READ_NEW" : {
-                    "method": "GET", "url": "Calls.json", "contentType": "application/x-www-form-urlencoded",
+                    "method": "GET", "url": "Calls.json",
                     "params": {
                         "Status": "completed"
                     },
@@ -160,7 +160,7 @@
             },
             "send_sms" : {
                 "CREATE" : {
-                    "method": "POST", "url": "SMS/Messages.json", "contentType": "application/x-www-form-urlencoded",
+                    "method": "POST", "url": "SMS/Messages.json",
                     "params": {
                         "From": "${message.from}",
                         "To": "${message.to}",
