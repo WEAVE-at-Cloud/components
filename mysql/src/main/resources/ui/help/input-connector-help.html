@@ -22,8 +22,17 @@ markers:
     <li><code>##</code>: Use a double hash to mark the parameter values in the <code>where</code> (see next section).</li>
 </ol>
 <p/>
-Example: <code>select #id, #fname, #lname, #email from subscriptions where id > ##id</code>
+Example: <code>select #id, #first name#, #lname, #email from subscriptions where id > ##id</code>
 <p/>
+<div class="alert alert-info">
+    <strong>Tip:</strong> Note how, in the above select statement example, we also mark the end (as well as the start) of the
+    'first name' column with a <code>#</code> character.  We do this whenever the column name has special characters that
+    effect parsing of the statement e.g. a space character.
+</div>
+<div class="alert alert-danger">
+    <strong>Warning:</strong> Wildcard select statements (e.g. <code>select * from mytable</code>) are not supported.  FoxWeave needs
+    the names of the columns in order to support data filtering, data mapping etc.
+</div>
 
 <h4>'where' Clause</h4>
 Be carefull when constructing the <code>where</code> clause.  This is especially important when creating a synchronization
