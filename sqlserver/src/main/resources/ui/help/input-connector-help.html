@@ -11,7 +11,7 @@ Configuring the SQL Server input connector is quite simple:
     <strong>Tip:</strong> When creating a <strong>SqlServer Server</strong> (after pressing the <img src="/images/add.png"/> button),
     do NOT enter a local loopback address ("localhost" or "127.0.0.1") as the SqlServer Server <strong>Host</strong> name/IP.  Remember that this SqlServer Server <strong>Host</strong>
     address needs to be resolvable on the FoxWeave target on which you chose to start/run the integration i.e. on an
-    <a href="http://www.foxweave.com/integration-runtime-options/">On-Premise or On-PaaS</a> host machine.
+    <a href="http://www.cloudbees.com/platform/services/integrate/integration-runtime-options">On-Premise or On-PaaS</a> host machine.
 </div>
 
 <h4>'select' Statement Syntax</h4>
@@ -36,7 +36,7 @@ Example: <code>select #id, #first name#, #lname, #email from subscriptions where
 
 <h4>'where' Clause</h4>
 Be carefull when constructing the <code>where</code> clause.  This is especially important when creating a synchronization
-application (see <a href="http://www.foxweave.com/synchronization-vs-migration/">Synchronization Vs Migration</a>).
+application (see <a href="http://www.cloudbees.com/platform/services/integrate/migrate-sync/">Synchronization Vs Migration</a>).
 <p/>
 An important roll played by the <code>where</code> clause is that of allowing FoxWeave restart a sync process after a given
 poll interval i.e. to check for new records added since the last poll.  In order to do this, the <code>where</code> clause
