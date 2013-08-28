@@ -19,7 +19,17 @@ public class ZohoInboundTransformer<F, T> implements PipelinePayloadTransformer<
     public JSONObject transform(String rawPayload) throws Exception {
         JSONObject untransformedPayload = new JSONObject(rawPayload);
         JSONObject transformedPayload = new JSONObject();
-        JSONArray rowsIn = (JSONArray) JSONUtil.getValue(untransformedPayload, "response", "result", objectName, "row");
+        Object rowsInObj = JSONUtil.getValue(untransformedPayload, "response", "result", objectName, "row");
+        JSONArray rowsIn = null;
+
+        // Zoho's suckie API returns a JSON object when there's 1 row, and returns an
+        // array when there's a collection.  Yeuck!!
+        if (rowsInObj instanceof JSONObject) {
+            rowsIn = new JSONArray();
+            rowsIn.put(rowsInObj);
+        } else if (rowsInObj instanceof JSONArray) {
+            rowsIn = (JSONArray) rowsInObj;
+        }
 
         if (rowsIn != null) {
             JSONArray rowsOut = new JSONArray();

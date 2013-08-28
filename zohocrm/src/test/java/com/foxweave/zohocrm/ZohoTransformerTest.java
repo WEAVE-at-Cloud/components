@@ -9,14 +9,25 @@ import org.junit.Test;
 public class ZohoTransformerTest {
     
     @Test
-    public void test_inbound_transform() throws Exception {
+    public void test_inbound_1_transform() throws Exception {
         ZohoInboundTransformer inboundTransformer = new ZohoInboundTransformer();
 
         inboundTransformer.setObjectName("Leads");
-        JSONObject result = inboundTransformer.transform(SAMPLE_INPUT);
+        JSONObject result = inboundTransformer.transform(SAMPLE_INPUT_1);
 
 //        System.out.println(result.toString(4));
-        JsonAssert.assertJsonEquals(SAMPLE_INPUT_TRANSFORMED, result.toString());
+        JsonAssert.assertJsonEquals(SAMPLE_INPUT_1_TRANSFORMED, result.toString());
+    }
+
+    @Test
+    public void test_inbound_2_transform() throws Exception {
+        ZohoInboundTransformer inboundTransformer = new ZohoInboundTransformer();
+
+        inboundTransformer.setObjectName("Leads");
+        JSONObject result = inboundTransformer.transform(SAMPLE_INPUT_2);
+
+//        System.out.println(result.toString(4));
+        JsonAssert.assertJsonEquals(SAMPLE_INPUT_2_TRANSFORMED, result.toString());
     }
 
     @Test
@@ -31,7 +42,7 @@ public class ZohoTransformerTest {
         XMLAssert.assertXMLEqual(SAMPLE_OUTPUT_TRANSFORMED, result);
     }
 
-    private static final String SAMPLE_INPUT = "{\n" +
+    private static final String SAMPLE_INPUT_1 = "{\n" +
                     "    \"response\": {\n" +
                     "        \"result\": {\n" +
                     "            \"Leads\": {\n" +
@@ -93,7 +104,7 @@ public class ZohoTransformerTest {
                     "    }\n" +
                     "}";
 
-    private static final String SAMPLE_INPUT_TRANSFORMED =
+    private static final String SAMPLE_INPUT_1_TRANSFORMED =
             "{\"rows\": [\n" +
                     "    {\n" +
                     "        \"Company\": \"MickeyMouseClub\",\n" +
@@ -108,6 +119,52 @@ public class ZohoTransformerTest {
                     "        \"Last_Activity_Time\": \"2013-05-06 14:25:02\",\n" +
                     "        \"Lead_Owner\": \"Evan Habersham\",\n" +
                     "        \"SMOWNERID\": \"936925000000061001\"\n" +
+                    "    }\n" +
+                    "]}";
+
+    private static final String SAMPLE_INPUT_2 = "{\n" +
+            "    \"response\": {\n" +
+            "        \"result\": {\n" +
+            "            \"Leads\": {\n" +
+            "                \"row\": {\n" +
+            "                        \"no\": \"1\",\n" +
+            "                        \"FL\": [\n" +
+            "                            {\n" +
+            "                                \"content\": \"636925000000061001\",\n" +
+            "                                \"val\": \"LEADID\"\n" +
+            "                            },\n" +
+            "                            {\n" +
+            "                                \"content\": \"736925000000061001\",\n" +
+            "                                \"val\": \"SMOWNERID\"\n" +
+            "                            },\n" +
+            "                            {\n" +
+            "                                \"content\": \"Evan Habersham\",\n" +
+            "                                \"val\": \"Lead Owner\"\n" +
+            "                            },\n" +
+            "                            {\n" +
+            "                                \"content\": \"MickeyMouseClub\",\n" +
+            "                                \"val\": \"Company\"\n" +
+            "                            },\n" +
+            "                            {\n" +
+            "                                \"content\": \"2013-05-06 14:25:02\",\n" +
+            "                                \"val\": \"Last Activity Time\"\n" +
+            "                            }\n" +
+            "                        ]\n" +
+            "                    }" +
+            "            }\n" +
+            "        },\n" +
+            "        \"uri\": \"/crm/private/json/Leads/getMyRecords\"\n" +
+            "    }\n" +
+            "}";
+
+    private static final String SAMPLE_INPUT_2_TRANSFORMED =
+            "{\"rows\": [\n" +
+                    "    {\n" +
+                    "        \"Company\": \"MickeyMouseClub\",\n" +
+                    "        \"LEADID\": \"636925000000061001\",\n" +
+                    "        \"Last_Activity_Time\": \"2013-05-06 14:25:02\",\n" +
+                    "        \"Lead_Owner\": \"Evan Habersham\",\n" +
+                    "        \"SMOWNERID\": \"736925000000061001\"\n" +
                     "    }\n" +
                     "]}";
 
