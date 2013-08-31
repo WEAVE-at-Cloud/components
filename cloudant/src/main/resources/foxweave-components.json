@@ -38,8 +38,7 @@
                 {
                     "groupId": "com.foxweave",
                     "artifactId": "cloudant",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-components-cloudant-0.1.jar"
+                    "fileName": "/lib/foxweave-components-cloudant.jar"
                 }
             ]
         }

@@ -63,14 +63,13 @@
             {
                 "groupId": "com.foxweave.connector",
                 "artifactId": "rdatabase",
-                "version": "0.1",
-                "fileName": "/lib/foxweave-abstract-components-rdatabase-0.1.jar"
+                "version": "@foxweaveVersion@",
+                "fileName": "/lib/foxweave-abstract-components-rdatabase-@foxweaveVersion@.jar"
             },
             {
                 "groupId": "com.foxweave.connector",
                 "artifactId": "postgres",
-                "version": "0.1",
-                "fileName": "/lib/foxweave-components-postgres-0.1.jar"
+                "fileName": "/lib/foxweave-components-postgres.jar"
             },
             {
                 "groupId": "postgresql",
@@ -98,14 +97,13 @@
             {
                 "groupId": "com.foxweave.connector",
                 "artifactId": "rdatabase",
-                "version": "0.1",
-                "fileName": "/lib/foxweave-abstract-components-rdatabase-0.1.jar"
+                "version": "@foxweaveVersion@",
+                "fileName": "/lib/foxweave-abstract-components-rdatabase-@foxweaveVersion@.jar"
             },
             {
                 "groupId": "com.foxweave.connector",
                 "artifactId": "postgres",
-                "version": "0.1",
-                "fileName": "/lib/foxweave-components-postgres-0.1.jar"
+                "fileName": "/lib/foxweave-components-postgres.jar"
             },
             {
                 "groupId": "postgresql",

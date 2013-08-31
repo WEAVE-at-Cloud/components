@@ -94,14 +94,13 @@
                 {
                     "groupId": "com.foxweave.connector",
                     "artifactId": "http",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                    "version": "@foxweaveVersion@",
+                    "fileName": "/lib/foxweave-abstract-components-http-@foxweaveVersion@.jar"
                 },
                 {
                     "groupId": "com.foxweave",
                     "artifactId": "onepagecrm",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-components-onepagecrm-0.1.jar"
+                    "fileName": "/lib/foxweave-components-onepagecrm.jar"
                 }
             ]
         },
@@ -123,14 +122,13 @@
                 {
                     "groupId": "com.foxweave.connector",
                     "artifactId": "http",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                    "version": "@foxweaveVersion@",
+                    "fileName": "/lib/foxweave-abstract-components-http-@foxweaveVersion@.jar"
                 },
                 {
                     "groupId": "com.foxweave",
                     "artifactId": "onepagecrm",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-components-onepagecrm-0.1.jar"
+                    "fileName": "/lib/foxweave-components-onepagecrm.jar"
                 }
             ]
         }

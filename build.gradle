@@ -1,4 +1,4 @@
-project.ext.set("foxweaveVersion", "0.1")
+project.ext.set("foxweaveVersion", '0.2-SNAPSHOT')
 project.ext.set("slf4jVersion", "1.6.4")
 
 apply plugin: 'eclipse'
@@ -14,7 +14,7 @@ subprojects {
     project.buildDir = 'target';
     project.ext.set('groupId', 'com.foxweave');
     project.ext.set('artifactId', project.archivesBaseName);
-    project.version = '0.1';
+    project.version = '1.0';
 
     repositories {
         mavenLocal()
@@ -44,25 +44,6 @@ subprojects {
     }
 
     sourceSets.main.compileClasspath += configurations.provided + configurations.component
-
-    install {
-        repositories.mavenInstaller {
-            pom.whenConfigured { pom ->
-                if (pom.groupId == 'foxweave' ) {
-                    pom.artifactId = project.artifactId
-                    pom.groupId = project.groupId
-                    pom.version = '0.1'
-                }
-                pom.dependencies.findAll {
-                    if (it.groupId.startsWith('foxweave')) {
-                        it.artifactId = "foxweave-" + it.artifactId.replaceAll('/', '-')
-                        it.groupId = project.groupId
-                        it.version = '0.1'
-                    }
-                }
-            }
-        }
-    }
 
     sourceCompatibility = 1.6
 
@@ -110,11 +91,31 @@ configure(project.foxweaveComponents) {
         into('/') {
             from 'src/main/resources'
             include '**/*'
+            exclude '**/foxweave-components.json'
+        }
+        into('/') {
+            from 'src/main/resources'
+            include '**/foxweave-components.json'
+            filter(
+                    org.apache.tools.ant.filters.ReplaceTokens,
+                    tokens: [foxweaveVersion: project.foxweaveVersion]
+            )
+        }
+
+        // Copy all the jar files. Remove the version number from the component jar file.
+        into('/lib') {
+            from configurations.component
+            from "${buildDir}/libs/"
+            include '*.jar'
+            exclude project.archivesBaseName + '-1.0.jar'
         }
         into('/lib') {
             from configurations.component
             from "${buildDir}/libs/"
-            include '**/*.jar'
+            include project.archivesBaseName + '-1.0.jar'
+            rename { String fileName ->
+                fileName.replace('-1.0.jar', '.jar')
+            }
         }
     }
 

@@ -207,14 +207,13 @@
                 {
                     "groupId": "com.foxweave.connector",
                     "artifactId": "http",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                    "version": "@foxweaveVersion@",
+                    "fileName": "/lib/foxweave-abstract-components-http-@foxweaveVersion@.jar"
                 },
                 {
                     "groupId": "com.foxweave",
                     "artifactId": "twilio",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-components-twilio-0.1.jar"
+                    "fileName": "/lib/foxweave-components-twilio.jar"
                 }
             ]
         },
@@ -236,14 +235,13 @@
                 {
                     "groupId": "com.foxweave.connector",
                     "artifactId": "http",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-abstract-components-http-0.1.jar"
+                    "version": "@foxweaveVersion@",
+                    "fileName": "/lib/foxweave-abstract-components-http-@foxweaveVersion@.jar"
                 },
                 {
                     "groupId": "com.foxweave",
                     "artifactId": "twilio",
-                    "version": "0.1",
-                    "fileName": "/lib/foxweave-components-twilio-0.1.jar"
+                    "fileName": "/lib/foxweave-components-twilio.jar"
                 }
             ]
         }
