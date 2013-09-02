@@ -35,6 +35,7 @@
                 "label": "User",
                 "apiDocs": "http://developer.zendesk.com/documentation/rest_api/users.html",
                 "operations": {"create":true},
+                "preOutputTransformer": "com.foxweave.connector.http.transform.SimpleNameWrapTransformer",
                 "fields" : [
                     {"name": "id", "label": "ID", "hint": "Automatically assigned when creating users", "provideOn": {"create": "exclude"}},
                     {"name": "url", "label": "URL", "hint": "The API url of this user", "provideOn": {"create": "exclude"}},
@@ -115,6 +116,7 @@
                 "label": "Ticket",
                 "apiDocs": "http://developer.zendesk.com/documentation/rest_api/tickets.html",
                 "operations": {"create":true},
+                "preOutputTransformer": "com.foxweave.connector.http.transform.SimpleNameWrapTransformer",
                 "fields" : [
                     {"name": "id", "label": "ID", "hint": "Automatically assigned when creating tickets", "provideOn": {"create": "exclude"}},
                     {"name": "url", "label": "URL",	"hint": "The API url of this ticket", "provideOn": {"create": "exclude"}},
@@ -223,7 +225,6 @@
                 "CREATE" : {
                     "method": "POST",
                     "url": "api/v2/${objectName}s.json",
-                    "transformer": "com.foxweave.connector.http.transform.SimpleNameWrapTransformer",
                     "evals": {
                         "success": "response.notFail"
                     }
