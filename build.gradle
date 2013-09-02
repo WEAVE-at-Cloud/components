@@ -18,8 +18,14 @@ subprojects {
 
     repositories {
         mavenLocal()
-        maven {
-            url "http://maven.foxweave.com/releases/"
+        if (project.foxweaveVersion.endsWith("-SNAPSHOT")) {
+            maven {
+                url "http://maven.foxweave.com/snapshots/"
+            }
+        } else {
+            maven {
+                url "http://maven.foxweave.com/releases/"
+            }
         }
         mavenCentral()
     }
