@@ -17,9 +17,9 @@ $.foxweave.addComponentView(function() {
         getCloudantRes(dbnameSelect.val() + '/_all_docs?limit=1', function(jsonStructure) {
             if (jsonStructure && jsonStructure.rows && jsonStructure.rows.length === 1) {
                 var docId = jsonStructure.rows[0].id;
-                getCloudantRes(dbnameSelect.val() + '/' + docId, callback, $('#cloudant_message_structure_div'));
+                getCloudantRes(dbnameSelect.val() + '/' + docId, callback, messageStructureTextArea);
             }
-        }, $('#cloudant_message_structure_div'));
+        }, messageStructureTextArea);
     }
 
     function configureCloudantURL() {
