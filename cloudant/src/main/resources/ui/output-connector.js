@@ -3,7 +3,7 @@ $.foxweave.addComponentView(function() {
     var cloudantAccount = component.accountSelected;
     var dbnameSelect = $("#cloudant_database_name");
     var messageStructureRow = $("#cloudant_message_structure_row");
-    var messageStructureTextArea = $("#cloudant_message_structure");
+    var produces_consumes_div = $("#cloudant_message_structure_div div.uiComp");
 
     function getCloudantRes(resource, successCallback, loadingImgOn) {
         if (cloudantAccount !== undefined && cloudantAccount.accountName !== undefined) {
@@ -13,13 +13,17 @@ $.foxweave.addComponentView(function() {
         }
     }
 
+    function getMessageStructureTextArea() {
+        return $('#cloudant_message_structure');
+    }
+
     function getFirstDocInDB(callback) {
         getCloudantRes(dbnameSelect.val() + '/_all_docs?limit=1', function(jsonStructure) {
             if (jsonStructure && jsonStructure.rows && jsonStructure.rows.length === 1) {
                 var docId = jsonStructure.rows[0].id;
-                getCloudantRes(dbnameSelect.val() + '/' + docId, callback, messageStructureTextArea);
+                getCloudantRes(dbnameSelect.val() + '/' + docId, callback, getMessageStructureTextArea());
             }
-        }, messageStructureTextArea);
+        }, getMessageStructureTextArea());
     }
 
     function configureCloudantURL() {
@@ -61,6 +65,16 @@ $.foxweave.addComponentView(function() {
         }
     }
 
+    function showHideSourceButtons() {
+        if ($('textarea', produces_consumes_div).size() === 0) {
+            // We're not editing a sample.  Hide the buttons...
+            $('.sampleSourceBtns').hide();
+        } else {
+            // We're editing a sample.  Show the buttons...
+            $('.sampleSourceBtns').show();
+        }
+    }
+
     // Listen for a cloudant user account change...
     component.onAccountChanged(function() {
         configureCloudantURL();
@@ -69,26 +83,32 @@ $.foxweave.addComponentView(function() {
 
     // Listen for a cloudant db change...
     dbnameSelect.change(function() {
-        messageStructureTextArea.val('');
+        getMessageStructureTextArea().val('');
     });
 
     // Listen for sample message structure change...
-    messageStructureTextArea.change(function() {
+    getMessageStructureTextArea().change(function() {
         var jsonDoc = $(this).val();
         if(!storeDocStructure(jsonDoc)) {
             $(this).addClass('invalidInput');
         }
     });
 
-    if (messageStructureTextArea.val() !== undefined && messageStructureTextArea !== '') {
+    if (getMessageStructureTextArea().val() !== undefined && getMessageStructureTextArea() !== '') {
         messageStructureRow.show();
     }
 
+    produces_consumes_div.onDataModelChange(function(e) {
+        showHideSourceButtons();
+    });
+
     var use_previous_produces = $('#use_previous_produces');
     use_previous_produces.click(function() {
-        component.consumes(component.previousProduces());
+        var previousProduces = component.previousProduces();
+
+        component.consumes(previousProduces);
         component.mapSameNameFields();
-        messageStructureTextArea.val(JSON.stringify(component.toSampleMessage(component.previousProduces()), undefined, 4));
+        getMessageStructureTextArea().val(JSON.stringify(component.toSampleMessage(previousProduces), undefined, 4));
     });
     use_previous_produces.tooltip();
 
@@ -99,18 +119,18 @@ $.foxweave.addComponentView(function() {
                 delete jsonDoc._id;
                 delete jsonDoc._rev;
 
-                jsonDoc = $.foxweave.mapFieldNamesToValues(jsonDoc);
                 var stringifiedJson = JSON.stringify(jsonDoc, undefined, 2);
 
-                messageStructureTextArea.val(stringifiedJson);
-                messageStructureTextArea.removeClass('invalidInput');
+                getMessageStructureTextArea().val(stringifiedJson);
+                getMessageStructureTextArea().removeClass('invalidInput');
                 messageStructureRow.show();
                 component.consumes(jsonDoc);
             }
         });
     });
     use_cloudant_existing.tooltip();
-    
+
+    showHideSourceButtons();
     configureCloudantURL();
     configureDBList();
 });

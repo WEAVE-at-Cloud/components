@@ -154,15 +154,6 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
             return;
         }
 
-        StringBuilder messageBuilder = new StringBuilder();
-        try {
-            messageBuilder.append("{\"docs\":[");
-            messageBuilder.append(new String(FileUtils.read(batchFile), CharsetUtils.UTF8));
-            messageBuilder.append("]}");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         PostMethod postMethod = new PostMethod();
         try {
             FileRequestEntity requestEntity = new FileRequestEntity(batchFile, "application/json") {

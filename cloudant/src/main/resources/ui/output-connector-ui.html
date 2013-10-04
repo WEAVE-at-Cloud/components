@@ -20,13 +20,13 @@
         </td>
         <td>
             <div id="cloudant_message_structure_div" style="position: relative">
-                <textarea value="" class="validate[required] text-input input-xxlarge trigChangeOnVal"
-                          title="The structure of the JSON document output to the target Cloudant Document Database"
-                          id="cloudant_message_structure"
-                          rows="10"/>
-                <div class="btn-group" data-toggle="buttons-checkbox" style="position: absolute; top: 10px; left: 320px">
-                    <button type="button" class="btn btn-mini" id="use_previous_produces" title="Use the input message structure as the format of the Cloudant Document.">Use Input</button>
-                    <button type="button" class="btn btn-mini" id="use_cloudant_existing" title="Use the selected Cloudant DB message structure as the format of the Cloudant Document.">Use Cloudant</button>
+                <div class="uiComp" alias="widget:produces_consumes" textareaId="cloudant_message_structure" title="The structure of the JSON document output to the target Cloudant Document Database" />
+                <div class="btn-group sampleSourceBtns" data-toggle="buttons-checkbox" style="position: absolute; top: 10px; left: 330px">
+                    <button type="button" class="btn btn-mini" id="use_previous_produces" title="Get the input message structure.">Get Input</button>
+                    <button type="button" class="btn btn-mini" id="use_cloudant_existing" title="Get the first document from the selected Cloudant DB.">Get Cloudant</button>
+                </div>
+                <div class="fieldDescription">
+                    The structure of the JSON Document to be created in the target Cloudant DB (selected above).
                 </div>
             </div>
         </td>
