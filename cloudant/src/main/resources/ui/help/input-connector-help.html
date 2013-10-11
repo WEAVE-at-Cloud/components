@@ -1,0 +1,17 @@
+Cloudant is a cloud-hosted NoSQL database service (DBaaS). <a href="http://www.foxweave.com/cloudant/">See online docs for more details (and demos)</a>.
+<p/>
+Configuring the Cloudant input connector is quite simple:
+<ol>
+    <li>Select the <strong>Cloudant Account</strong> (press the <img src="/images/add.png"/> button to add an account, if needed).</li>
+    <li>Select the name of the target database (the <strong>DB Name</strong> field).</li>
+    <li>After selecting the database name (step #2), specify the structure of the JSON documents you will be receiving from
+        Cloudant.  If the selected Database has documents containing different structures, then you will need to specify filtering
+        rules (step #4) based on the field contents of the required Cloudant document.  In that case, just specify the structure of the
+        document you will be processing (and ignore the others).</strong></li>
+    <li>Go to the <strong>Data Filtering</strong> tab and optionally specify filtering rules.</li>
+</ol>
+
+<div class="alert alert-info">
+    <strong>Tip:</strong> Make sure the JSON document field values (defined in step #3) have human readable values.  This makes
+    the filtering process (step #4) a lot easier.
+</div>

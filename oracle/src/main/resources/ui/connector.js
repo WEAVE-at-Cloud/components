@@ -4,7 +4,7 @@ $.foxweave.addComponentView(function() {
     // Don't specify a DB name for Oracle...
     $('#rdb_db_name_row').remove();
 
-    if (component.descriptor.type === 'InputConnector') {
+    if (component.type === 'InputConnector') {
         // Uppercase the SQL statement for Oracle when it's an input connector.
         // Only do this for the input because it produces records for the pipeline
         // and so we need the "produces" variables (that the pipeline components after the

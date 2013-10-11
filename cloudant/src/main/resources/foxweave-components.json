@@ -22,7 +22,42 @@
         {
             "name": "cloudant",
             "displayName": "Cloudant",
-            "whatitdoes": "Output JSON Documents to the Cloudant Cloud Document Database.",
+            "whatitdoes": "Receive JSON Documents from the Cloudant Cloud NoSQL/Document Database.",
+            "category": "database",
+            "type": "InputConnector",
+            "runtime": "com.foxweave.connector.cloudant.CloudantInputConnector",
+            "smalllogo": "ui/images/smalllogo.png",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/input-connector-help.html",
+            "configUI": {
+                "html": "ui/input-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "supportsMigrate": true,
+            "supportsManualTrigger": true,
+            "deps": [
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "foxweave-commons-common-json-streaming",
+                    "version": "@foxweaveVersion@",
+                    "fileName": "/lib/foxweave-commons-common-json-streaming-@foxweaveVersion@.jar"
+                },
+                {
+                    "groupId": "com.fasterxml.jackson.core",
+                    "artifactId": "jackson-core",
+                    "version": "2.2.0"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "cloudant",
+                    "fileName": "/lib/foxweave-components-cloudant.jar"
+                }
+            ]
+        },
+        {
+            "name": "cloudant",
+            "displayName": "Cloudant",
+            "whatitdoes": "Output JSON Documents to the Cloudant Cloud NoSQL/Document Database.",
             "category": "database",
             "type": "OutputConnector",
             "runtime": "com.foxweave.connector.cloudant.CloudantOutputConnector",
@@ -31,8 +66,7 @@
             "help": "ui/help/output-connector-help.html",
             "configUI": {
                 "html": "ui/output-connector-ui.html",
-                "configJs": "scripts/component-config/PROPERTIES.js",
-                "viewJs": "ui/output-connector.js"
+                "viewJs": "ui/connector.js"
             },
             "deps": [
                 {

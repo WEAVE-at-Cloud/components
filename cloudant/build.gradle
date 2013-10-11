@@ -1,5 +1,6 @@
 dependencies {
     compile ("com.foxweave:foxweave-api:${foxweaveVersion}");
     compile ("com.foxweave:foxweave-commons-common-data:${foxweaveVersion}");
+    compile ("com.foxweave:foxweave-commons-common-json-streaming:${foxweaveVersion}");
 }
 

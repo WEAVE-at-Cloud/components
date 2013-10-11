@@ -6,22 +6,16 @@
 package com.foxweave.connector.cloudant;
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import com.foxweave.codec.Base64Coder;
-import com.foxweave.data.component.ConfigUtil;
 import com.foxweave.exception.FoxWeaveException;
 import com.foxweave.io.CharsetUtils;
-import com.foxweave.io.FileUtils;
 import com.foxweave.io.StreamUtils;
-import com.foxweave.pipeline.component.AbstractPipelineComponent;
 import com.foxweave.pipeline.component.ComponentConfigurationException;
 import com.foxweave.pipeline.component.OutputConnector;
 import com.foxweave.pipeline.component.listener.ExchangeLifecycleListener;
 import com.foxweave.pipeline.exchange.Exchange;
 import com.foxweave.pipeline.exchange.Message;
-import com.foxweave.pipeline.lifecycle.Configurable;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.FileRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -29,7 +23,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CloudantOutputConnector extends AbstractPipelineComponent implements ExchangeLifecycleListener, Configurable<JSONObject>, OutputConnector {
+public class CloudantOutputConnector extends AbstractCloudantConnector implements ExchangeLifecycleListener, OutputConnector {
 
     private static final Logger logger = LoggerFactory.getLogger(CloudantOutputConnector.class);
     private static final String CLOUDANT_DEFAULT_MAX_BATCH_SIZE = "CLOUDANT_DEFAULT_MAX_BATCH_SIZE";
@@ -47,17 +41,11 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
         }
     }
 
-    public static final String URL = "cloudant_server_url";
-    public static final String DATABASE_NAME = "cloudant_database_name";
-    public static final String USER_NAME = "accountName";
-    public static final String PASSWORD = "password";
     public static final String MAX_BATCH_SIZE = "maxBatchSize";
 
-    private HttpClient httpClient;
-    private URI requestURI;
-    private String encodedAuthCredentials;
     private File batchFile;
     private int maxBatchSize = DEFAULT_MAX_BATCH_SIZE;
+    private AtomicInteger numDocsInBatch = new AtomicInteger(0);
 
     public File getBatchFile() {
         return batchFile;
@@ -65,26 +53,13 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
 
     @Override
     public void setConfiguration(final JSONObject config) throws ComponentConfigurationException {
-        String serverURL = config.optString(URL);
-        String dbName = config.optString(DATABASE_NAME);
-        String dbUrl;
-
-        if (serverURL.endsWith("/")) {
-            dbUrl = serverURL + dbName;
-        } else {
-            dbUrl = serverURL + "/" + dbName;
-        }
-        try {
-            this.requestURI = new URI(dbUrl + "/_bulk_docs", false);
-        } catch (URIException e) {
-            throw new ComponentConfigurationException("");
-        }
-
-        String username = ConfigUtil.getAccountParam(USER_NAME, config);
-        String password = ConfigUtil.getAccountParam(PASSWORD, config);
-        encodedAuthCredentials = Base64Coder.encodeString(username + ":" + password);
-
+        super.setConfiguration(config);
         maxBatchSize = config.optInt(MAX_BATCH_SIZE, DEFAULT_MAX_BATCH_SIZE);
+    }
+
+    @Override
+    protected String getRESTResource() {
+        return "/_bulk_docs";
     }
 
     @Override
@@ -93,8 +68,6 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
         if (!batchFile.getParentFile().exists()) {
             batchFile.getParentFile().mkdirs();
         }
-
-        httpClient = new HttpClient();
         if (batchFile.exists()) {
             sendBatch();
         }
@@ -139,6 +112,7 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
                 }
                 batchFileWriter.write(json.toString());
                 batchFileWriter.flush();
+                numDocsInBatch.incrementAndGet();
             } finally {
                 StreamUtils.safeClose(batchFileWriter);
             }
@@ -170,11 +144,19 @@ public class CloudantOutputConnector extends AbstractPipelineComponent implement
                 }
             };
 
+            if (numDocsInBatch.get() != 0) {
+                logger.debug("Sending {} documents to Cloudant ({}).", numDocsInBatch.get(), requestURI);
+            } else {
+                // Num docs unknown - probably a restart
+                logger.debug("Sending documents to Cloudant ({}).", requestURI);
+            }
+
             postMethod.setURI(requestURI);
             postMethod.setRequestHeader("Authorization", "Basic " + encodedAuthCredentials);
             postMethod.setRequestEntity(requestEntity);
             httpClient.executeMethod(postMethod);
 
+            logger.debug("Sending batch of documents to ");
             if (postMethod.getStatusCode() >= 200 && postMethod.getStatusCode() < 300) {
                 batchFile.delete();
             } else {

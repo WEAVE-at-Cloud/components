@@ -3,12 +3,9 @@ Cloudant is a cloud-hosted NoSQL database service (DBaaS). <a href="http://www.f
 Configuring the Cloudant output connector is quite simple:
 <ol>
     <li>Select the <strong>Cloudant Account</strong> (press the <img src="/images/add.png"/> button to add an account, if needed).</li>
-    <li>Enter the name of the target database (in the <strong>DB Name</strong> field).  This should be an active
-        database on the Cloudant account selected in step #1.</li>
-    <li>After entering the database name (step #2), the <strong>DB Document Structure</strong> field should become pre-filled
-        with a sample document from the database selected in step #2.  The contents of this field define the structure of the document that
-        the FoxWeave pipeline needs to create/update.  <strong>If the database does not have any existing documents, you must
-        create a JSON structure that represents the document you would like to create in the target database.</strong></li>
+    <li>Select the name of the target database (the <strong>DB Name</strong> field).</li>
+    <li>After selecting the database name (step #2), specify the structure of the JSON document you would like to
+        create in the target Cloudant Database.</strong></li>
     <li>Go to the <strong>Data Mapping</strong> tab and map the pipeline data into the target document structure (defined in step #3).</li>
 </ol>
 

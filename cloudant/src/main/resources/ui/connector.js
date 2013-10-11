@@ -52,19 +52,6 @@ $.foxweave.addComponentView(function() {
         }
     }
 
-    function storeDocStructure(jsonDoc) {
-        try {
-            var jsonObj = JSON.parse(jsonDoc);
-            if (jsonObj !== undefined) {
-                component.consumes(jsonObj);
-            }
-            return true;
-        } catch (e) {
-            component.consumes({});
-            return false;
-        }
-    }
-
     function showHideSourceButtons() {
         if ($('textarea', produces_consumes_div).size() === 0) {
             // We're not editing a sample.  Hide the buttons...
@@ -86,14 +73,6 @@ $.foxweave.addComponentView(function() {
         getMessageStructureTextArea().val('');
     });
 
-    // Listen for sample message structure change...
-    getMessageStructureTextArea().change(function() {
-        var jsonDoc = $(this).val();
-        if(!storeDocStructure(jsonDoc)) {
-            $(this).addClass('invalidInput');
-        }
-    });
-
     if (getMessageStructureTextArea().val() !== undefined && getMessageStructureTextArea() !== '') {
         messageStructureRow.show();
     }
@@ -106,7 +85,6 @@ $.foxweave.addComponentView(function() {
     use_previous_produces.click(function() {
         var previousProduces = component.previousProduces();
 
-        component.consumes(previousProduces);
         component.mapSameNameFields();
         getMessageStructureTextArea().val(JSON.stringify(component.toSampleMessage(previousProduces), undefined, 4));
     });
@@ -124,7 +102,6 @@ $.foxweave.addComponentView(function() {
                 getMessageStructureTextArea().val(stringifiedJson);
                 getMessageStructureTextArea().removeClass('invalidInput');
                 messageStructureRow.show();
-                component.consumes(jsonDoc);
             }
         });
     });
