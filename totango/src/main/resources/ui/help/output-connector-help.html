@@ -1,0 +1,16 @@
+Twitter is... Twitter.  It needs no introduction. <a href="http://www.foxweave.com/apps-and-dbs/twitter">See online docs for more details (and demos)</a>.
+<p/>
+<div class="alert alert-info">
+    <strong>Note:</strong> Integrations using the Twitter components can only be run on FoxWeave infrastructure i.e.
+    you cannot use them <a href="http://www.cloudbees.com/platform/services/integrate/integration-runtime-options">On-Premise or On-PaaS</a>.
+    This is because of the type of authentication used by the Twitter service (OAuth v1.0a), which requires the use of
+    a "consumerSecret", which must be protected and so cannot be exposed to non-FoxWeave infrastructure
+    (i.e. <a href="http://www.cloudbees.com/platform/services/integrate/integration-runtime-options">On-Premise or On-PaaS</a> machines).
+</div>
+<p/>
+Configuring the Twitter output connector is quite simple:
+<ol>
+    <li>Select the <strong>Twitter Account</strong> (press the <img src="/images/add.png"/> button to add an account, if needed).</li>
+    <li>Select the <strong>Twitter Action</strong> that you wish to sync/migrate to the selected account.</li>
+    <li>Go to the <strong>Data Mapping</strong> tab and map the pipeline data into the Zendesk object (selected in step #2).</li>
+</ol>

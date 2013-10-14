@@ -1,0 +1,98 @@
+{
+    "displayName": "Totango",
+    "smalllogo": "ui/images/favicon.ico",
+    "largelogo": "ui/images/largelogo.png",
+    "authDescriptor" : {
+        "title": "Totango Account",
+        "params" : {
+            "accountName": {
+                "displayIndex": 1,
+                "label" : "Account Alias",
+                "hint": "Account name/alias used to refer to the Totango account accessed by this set of security credentials."
+            },
+            "serviceId": {
+                "displayIndex": 2,
+                "label" : "Service ID",
+                "hint": "API identifier of your account on Totango.  Log into your Totango account to find this.  Consult Totango documentation."
+            }
+        }
+    },
+    "dataModel": {
+        "objects": {
+            "log_activity": {
+                "label": "Log Activity",
+                "display": "OutputConnector",
+                "hint": "Log user activity.",
+                "fields" : [
+                    {"name": "sdr_u", "label": "Username", "hint": "Email address of the username performing the action.",
+                        "provideOn": {"create": "mandatory"}},
+                    {"name": "sdr_o", "label": "Account ID", "hint": "Unique ID of the end-user’s account on your application.",
+                        "provideOn": {"create": "mandatory"}},
+                    {"name": "sdr_odn", "label": "Account Name", "hint": "A human readable name for the account (will be used on Totango’s UI and reports).",
+                        "provideOn": {"create": "mandatory"}},
+                    {"name": "sdr_a", "label": "Activity", "hint": "Name of the activity the user performed.",
+                        "provideOn": {"create": "mandatory"}},
+                    {"name": "sdr_m", "label": "Module", "hint": "Name of the module the user is using within the application.",
+                        "provideOn": {"create": "mandatory"}},
+                    {"name": "sdr_ts", "label": "Timestamp", "hint": "Event Timestamp.  If not specified, Totango will timestamp using the time at which the event was logged.",
+                        "dataType": "DateTime", "dataFormat": "yyyy-MM-dd'T'HH:mm:ss.S'Z'",
+                        "provideOn": {"create": "optional"}
+                    }
+                ]
+            }
+        }
+    },
+    "httpDescriptor" : {
+        "baseUrl" : "http://sdr.totango.com/pixel.gif",
+        "contentType": "application/json",
+        "objOperations" : {
+            "log_activity" : {
+                "CREATE" : {
+                    "method": "GET",
+                    "params": {
+                        "sdr_s": "${auth.serviceId}",
+                        "sdr_u": "${message.sdr_u}",
+                        "sdr_o": "${message.sdr_o}",
+                        "sdr_odn": "${message.sdr_odn}",
+                        "sdr_a": "${message.sdr_a}",
+                        "sdr_m": "${message.sdr_m}",
+                        "sdr_ts": "${message.sdr_ts}"
+                    },
+                    "evals": {
+                        "success": "response.notFail"
+                    }
+                }
+            }
+        }
+    },
+    "components": [
+        {
+            "name": "totango",
+            "displayName": "Totango",
+            "whatitdoes": "Log application user activity to Totango.",
+            "type": "OutputConnector",
+            "category": "customer_support",
+            "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
+            "smalllogo": "ui/images/favicon.ico",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/output-connector-help.html",
+            "configUI": {
+                "html": "ui/output-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.foxweave.connector",
+                    "artifactId": "http",
+                    "version": "@foxweaveVersion@",
+                    "fileName": "/lib/foxweave-abstract-components-http-@foxweaveVersion@.jar"
+                },
+                {
+                    "groupId": "com.foxweave",
+                    "artifactId": "totango",
+                    "fileName": "/lib/foxweave-components-totango.jar"
+                }
+            ]
+        }
+    ]
+}
