@@ -1,6 +1,6 @@
 <table id="cloudantparams" class="configTable">
     <tr>
-        <td>Cloudant Account:</td>
+        <td>Cloudant Account</td>
         <td>
             <div class="uiComp" alias="auth" />
         </td>
@@ -12,6 +12,21 @@
         <td>
             <select id="cloudant_database_name" class="validate[required] text-input"
                     title="The name of the Cloudant Document Database from which documents will be received" />
+        </td>
+    </tr>
+    <tr id="cloudant_query_type_row">
+        <td>
+            Query Type
+        </td>
+        <td>
+            <input type="radio" name="queryType" value="_changes" checked="checked"> <span style="position: relative; top: 1px;">Changes</span><br>
+            <div class="fieldDescription">
+                Query the '<strong><a target="_blank" href="https://docs.cloudant.com/api/database.html#obtaining-a-list-of-changes">_changes</a></strong>' event list of the selected Cloudant DB.
+            </div>
+            <input type="radio" name="queryType" value="view"> <span style="position: relative; top: 1px;">View</span> <input name="viewPath" class="input-xxlarge" placeholder="e.g. '/_design/name/_view/view1'" />
+            <div class="fieldDescription">
+                Query a <a target="_blank" href="https://cloudant.com/for-developers/views/">View</a> of the selected Cloudant DB.
+            </div>
         </td>
     </tr>
     <tr id="cloudant_message_structure_row">

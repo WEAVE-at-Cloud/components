@@ -4,6 +4,37 @@ $.foxweave.addComponentView(function() {
     var dbnameSelect = $("#cloudant_database_name");
     var messageStructureRow = $("#cloudant_message_structure_row");
     var produces_consumes_div = $("#cloudant_message_structure_div div.uiComp");
+    var queryType = component.config('queryType');
+    var queryTypeRadios = $('#cloudant_query_type_row input[name=queryType]');
+    var viewPathInput = $('#cloudant_query_type_row input[name=viewPath]');
+
+    if (component.type === 'InputConnector') {
+        function toggleQueryType() {
+            viewPathInput.hide();
+            if (queryType === undefined) {
+                queryType = '_changes';
+            }
+            queryTypeRadios.removeAttr('checked');
+            queryTypeRadios.filter('[value=' + queryType + ']').attr('checked', 'checked');
+            if (queryType === 'view') {
+                viewPathInput.show();
+            }
+        }
+        toggleQueryType();
+
+        queryTypeRadios.change(function() {
+            queryType = queryTypeRadios.filter(':checked').val();
+            component.config('queryType', queryType);
+            toggleQueryType();
+        });
+        viewPathInput.keyup(function() {
+            var path = viewPathInput.val();
+            if (path.length > 0 && path.charAt(0) !== '/') {
+                path = '/' + path;
+                viewPathInput.val(path);
+            }
+        });
+    }
 
     function getCloudantRes(resource, successCallback, loadingImgOn) {
         if (cloudantAccount !== undefined && cloudantAccount.accountName !== undefined) {
@@ -18,10 +49,24 @@ $.foxweave.addComponentView(function() {
     }
 
     function getFirstDocInDB(callback) {
-        getCloudantRes(dbnameSelect.val() + '/_all_docs?limit=1', function(jsonStructure) {
+        var resourceUrl = '/_all_docs';
+
+        if (queryType === 'view') {
+            var viewPath = viewPathInput.val();
+            if (viewPath && viewPath.length > 0) {
+                resourceUrl = viewPath;
+            }
+        }
+
+        getCloudantRes(dbnameSelect.val() + resourceUrl + '?limit=1&include_docs=true', function(jsonStructure) {
             if (jsonStructure && jsonStructure.rows && jsonStructure.rows.length === 1) {
-                var docId = jsonStructure.rows[0].id;
-                getCloudantRes(dbnameSelect.val() + '/' + docId, callback, getMessageStructureTextArea());
+                if (queryType === 'view') {
+                    var doc = jsonStructure.rows[0].value;
+                    callback(doc);
+                } else {
+                    var doc = jsonStructure.rows[0].doc;
+                    callback(doc);
+                }
             }
         }, getMessageStructureTextArea());
     }
@@ -94,8 +139,10 @@ $.foxweave.addComponentView(function() {
     use_cloudant_existing.click(function() {
         getFirstDocInDB(function(jsonDoc) {
             if (jsonDoc !== undefined) {
-                delete jsonDoc._id;
-                delete jsonDoc._rev;
+                if (component.type === 'OutputConnector') {
+                    delete jsonDoc._id;
+                    delete jsonDoc._rev;
+                }
 
                 var stringifiedJson = JSON.stringify(jsonDoc, undefined, 2);
 

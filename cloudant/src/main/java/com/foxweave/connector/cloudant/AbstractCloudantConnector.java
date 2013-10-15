@@ -22,12 +22,15 @@ public abstract class AbstractCloudantConnector extends AbstractPipelineComponen
     public static final String USER_NAME = "accountName";
     public static final String PASSWORD = "password";
 
-    protected HttpClient httpClient = new HttpClient();
-    protected URI requestURI;
-    protected String encodedAuthCredentials;
+    public JSONObject config;
+    public HttpClient httpClient = new HttpClient();
+    public URI requestURI;
+    public String encodedAuthCredentials;
 
     @Override
     public void setConfiguration(final JSONObject config) throws ComponentConfigurationException {
+        this.config = config;
+
         String serverURL = config.optString(URL);
         String dbName = config.optString(DATABASE_NAME);
         String dbUrl;
@@ -50,5 +53,5 @@ public abstract class AbstractCloudantConnector extends AbstractPipelineComponen
         encodedAuthCredentials = Base64Coder.encodeString(username + ":" + password);
     }
 
-    protected abstract String getRESTResource();
+    protected abstract String getRESTResource() throws ComponentConfigurationException;
 }
