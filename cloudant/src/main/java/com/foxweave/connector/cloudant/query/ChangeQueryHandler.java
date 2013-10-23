@@ -9,6 +9,7 @@ import com.foxweave.json.streaming.JSONStreamer;
 import com.foxweave.pipeline.exchange.EntityState;
 import com.foxweave.pipeline.exchange.Exchange;
 import com.foxweave.pipeline.exchange.Message;
+import com.foxweave.util.ExchangeUtil;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.json.JSONException;
@@ -58,6 +59,9 @@ public class ChangeQueryHandler implements InputQueryHandler {
 
             method.setQueryString(queryParams);
             method.setRequestHeader("Authorization", "Basic " + cloudantInputConnector.encodedAuthCredentials);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing Cloudant _changes poll: {}", method.getURI());
+            }
             if (cloudantInputConnector.httpClient.executeMethod(method) == 200) {
                 InputStream dataStream = method.getResponseBodyAsStream();
 
@@ -85,6 +89,10 @@ public class ChangeQueryHandler implements InputQueryHandler {
                     } finally {
                         StreamUtils.safeClose(dataStream);
                     }
+                }
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Cloudant _changes poll failed: {} - {}", method.getStatusCode(), method.getResponseBodyAsString());
                 }
             }
         } finally {
@@ -159,6 +167,7 @@ public class ChangeQueryHandler implements InputQueryHandler {
 
         private void endExchange() {
             if (exchange != null) {
+                logger.debug("Sync'd {} doc(s) from '{}'.", ExchangeUtil.getMessageCount(exchange), cloudantInputConnector.requestURI);
                 exchange.end();
             } else {
                 logger.debug("Nothing to sync from '{}'.", cloudantInputConnector.requestURI);

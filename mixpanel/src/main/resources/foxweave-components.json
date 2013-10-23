@@ -1,0 +1,105 @@
+{
+    "displayName": "Mixpanel",
+    "smalllogo": "ui/images/favicon.png",
+    "largelogo": "ui/images/largelogo.png",
+    "authDescriptor" : {
+        "title": "Mixpanel Account",
+        "params" : {
+            "accountName": {
+                "displayIndex": 1,
+                "label" : "Account Alias",
+                "hint": "Account name/alias used to refer to the Mixpanel account accessed by this set of security credentials."
+            },
+            "token": {
+                "displayIndex": 2,
+                "label" : "Project Token",
+                "hint": "Your Mixpanel project token.  Located in the Mixpanel Dashboard."
+            }
+        }
+    },
+    "dataModel": {
+        "objects": {
+            "set_profile": {
+                "label": "Set User Profile",
+                "display": "OutputConnector",
+                "hint": "Set a User Profile.",
+                "customFields": "properties",
+                "fields" : [
+                    {"name": "distinct_id", "label": "User ID", "hint": "Any string that uniquely identifies the user.",
+                        "provideOn": {"create": "mandatory"}},
+                    {"name": "time", "label": "Update Time", "hint": "The update time for the profile (in milliseconds since midnight, January 1, 1970 UTC).  Will default to 'now', if not specified.", "dataType": "Long"},
+                    {"name": "ip", "label": "IP Address", "hint": "User IP Address. If set to '0', Mixpanel will ignore IP Address's", "defaultVal": "0"},
+                    {"name": "properties", "label": "Profile Properties", "hint": "Profile Properties.",
+                        "fields" : [
+                            {"name": "$first_name", "label": "First Name", "hint": "User's First Name."},
+                            {"name": "$last_name", "label": "Last Name", "hint": "User's Last Name."},
+                            {"name": "$created", "label": "Created Date/Time", "hint": "The time when the user created their account.",
+                                "dataType": "DateTime", "dataFormat": "yyyy-MM-dd'T'hh:mm:ss"
+                            },
+                            {"name": "$email", "label": "Email", "hint": "User's Email Address."},
+                            {"name": "$phone", "label": "Phone Number", "hint": "User's Phone Number."}
+                        ]
+                    }
+                ]
+            },
+            "log_activity": {
+                "label": "Log User Activity",
+                "display": "OutputConnector",
+                "hint": "Log User activity.",
+                "customFields": "properties",
+                "fields" : [
+                    {"name": "event", "label": "Event Name", "hint": "The name of the event being logged.",
+                        "provideOn": {"create": "mandatory"}},
+                    {"name": "properties", "label": "Event Properties", "hint": "Event Properties.",
+                        "fields" : [
+                            {"name": "distinct_id", "label": "User ID", "hint": "Any string that uniquely identifies the user.",
+                                "provideOn": {"create": "mandatory"}},
+                            {"name": "mp_name_tag", "label": "User Name", "hint": "Users Name. You can set this to any string value like an email, first and last name, or username.",
+                                "provideOn": {"create": "mandatory"}},
+                            {"name": "time", "label": "Event Time", "hint": "The time (in milliseconds) at which the event occurred.  Will default to 'now', if not specified. The connector will auto-adjust to seconds.", "dataType": "Long"},
+                            {"name": "ip", "label": "IP Address", "hint": "User IP Address."}
+                        ]
+                    }
+                ]
+            },
+            "delete_profile": {
+                "label": "Delete User Profile",
+                "display": "OutputConnector",
+                "hint": "Delete a User Profile.",
+                "fields" : [
+                    {"name": "distinct_id", "label": "User ID", "hint": "Any string that uniquely identifies the user.",
+                        "provideOn": {"create": "mandatory"}}
+                ]
+            }
+        }
+    },
+    "components": [
+        {
+            "name": "mixpanel",
+            "displayName": "Mixpanel",
+            "whatitdoes": "Log application user activity to Mixpanel.",
+            "type": "OutputConnector",
+            "category": "customer_support",
+            "runtime": "com.foxweave.connector.mixpanel.MixPanelOutputConnector",
+            "smalllogo": "ui/images/favicon.png",
+            "largelogo": "ui/images/largelogo.png",
+            "help": "ui/help/output-connector-help.html",
+            "configUI": {
+                "html": "ui/output-connector-ui.html",
+                "viewJs": "ui/connector.js"
+            },
+            "deps": [
+                {
+                    "groupId": "com.mixpanel",
+                    "artifactId": "mixpanel-java",
+                    "version": "1.2.1"
+                },
+                {
+                    "groupId": "com.foxweave.components",
+                    "artifactId": "mixpanel",
+                    "fileName": "/lib/foxweave-components-mixpanel.jar"
+                }
+            ]
+        }
+    ]
+}

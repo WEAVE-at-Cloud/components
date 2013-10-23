@@ -1,12 +1,11 @@
 package seed;
 
-import com.foxweave.connector.rdb.util.JDBCUtil;
 import com.foxweave.connector.rdb.util.RDBConnector;
+import com.foxweave.jdbc.JDBCUtil;
 import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.Random;
 
 /**

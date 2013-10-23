@@ -61,7 +61,7 @@ public class CloudantOutputConnectorTest extends FoxWeaveTestCase {
         config.put("authAccount", authAccount);
         authAccount.put(CloudantOutputConnector.USER_NAME, "uname");
         authAccount.put(CloudantOutputConnector.PASSWORD, "pw");
-        connector.setPipelineContext(getTestPipelineContext());
+        connector.setPipelineContext(getMockPipelineContext());
         connector.setConfiguration(config);
 
         // Initialize and start it...

@@ -1,0 +1,4 @@
+dependencies {
+    compile ("com.foxweave:foxweave-abstract-components-http:${foxweaveVersion}");
+    compile ("com.mixpanel:mixpanel-java:1.2.1");
+}

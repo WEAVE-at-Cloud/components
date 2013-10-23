@@ -2,6 +2,7 @@ rootProject.name = 'foxweave-components'
 
 include ':cloudant'
 include ':mailchimp'
+include ':mixpanel'
 include ':mysql'
 include ':onepagecrm'
 include ':oracle'
