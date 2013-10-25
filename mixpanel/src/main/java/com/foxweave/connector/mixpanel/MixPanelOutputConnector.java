@@ -52,8 +52,8 @@ public class MixPanelOutputConnector extends AbstractPipelineComponent implement
         JSONObject properties = payload.getJSONObject("properties");
 
         // Adjust the time from milliseconds to seconds...
-        Long time = properties.optLong("time");
-        if (time == null) {
+        Long time = properties.optLong("time", 0L);
+        if (time == 0L) {
             time = System.currentTimeMillis();
         }
         time = time/1000;
@@ -65,7 +65,7 @@ public class MixPanelOutputConnector extends AbstractPipelineComponent implement
         String distinct_id = properties.getString("distinct_id");
         JSONObject mixPanelMessage = messageBuilder.event(distinct_id, eventName, properties);
 
-        mixpanel.sendMessage(mixPanelMessage);
+        sendMessageToMixpanel(mixpanel, mixPanelMessage);
     }
 
     protected void setUserProfile(JSONObject payload) throws JSONException, IOException {
@@ -92,7 +92,7 @@ public class MixPanelOutputConnector extends AbstractPipelineComponent implement
             JSONUtil.setValue(mixPanelMessage, time, "message", "$time");
         }
 
-        mixpanel.sendMessage(mixPanelMessage);
+        sendMessageToMixpanel(mixpanel, mixPanelMessage);
     }
 
     protected void deleteUserProfile(JSONObject payload) throws JSONException, IOException {
@@ -114,6 +114,13 @@ public class MixPanelOutputConnector extends AbstractPipelineComponent implement
             JSONUtil.setValue(mixPanelMessage, time, "message", "$time");
         }
 
+        sendMessageToMixpanel(mixpanel, mixPanelMessage);
+    }
+
+    private void sendMessageToMixpanel(MixpanelAPI mixpanel, JSONObject mixPanelMessage) throws IOException {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Sending message to MixPanel: " + mixPanelMessage.toString());
+        }
         mixpanel.sendMessage(mixPanelMessage);
     }
 
