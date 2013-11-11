@@ -77,7 +77,7 @@ project.ext.set("foxweaveComponents", subprojects.findAll { project ->
     true
 })
 
-def imageMimeMappings = [png:"image/png", ico:"image/x-icon", gif:"image/gif", jpeg:"image/jpeg", jpeg:"image/jpeg"]
+def imageMimeMappings = [png:"image/png", ico:"image/x-icon", gif:"image/gif", jpg:"image/jpg", jpeg:"image/jpeg"]
 
 configure(project.foxweaveComponents) {
     apply plugin: 'application'
