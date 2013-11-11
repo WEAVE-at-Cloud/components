@@ -81,8 +81,6 @@
             "type": "OutputConnector",
             "category": "customer_support",
             "runtime": "com.foxweave.connector.mixpanel.MixPanelOutputConnector",
-            "smalllogo": "ui/images/favicon.png",
-            "largelogo": "ui/images/largelogo.png",
             "help": "ui/help/output-connector-help.html",
             "configUI": {
                 "html": "ui/output-connector-ui.html",

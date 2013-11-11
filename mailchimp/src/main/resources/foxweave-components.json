@@ -142,8 +142,6 @@
             "type": "OutputConnector",
             "category": "messaging",
             "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
-            "smalllogo": "ui/images/favicon.ico",
-            "largelogo": "ui/images/mc.png",
             "help": "ui/help/out-connector-help.html",
             "configUI": {
                 "html": "ui/out-connector-ui.html",

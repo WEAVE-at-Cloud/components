@@ -111,8 +111,6 @@
             "type": "InputConnector",
             "category": "crm_erp",
             "runtime": "com.foxweave.connector.http.SaaSInputConnector",
-            "smalllogo": "ui/images/favicon.ico",
-            "largelogo": "ui/images/mc.png",
             "help": "ui/help/input-connector-help.html",
             "supportsManualTrigger": true,
             "configUI": {
@@ -140,8 +138,6 @@
             "type": "OutputConnector",
             "category": "crm_erp",
             "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
-            "smalllogo": "ui/images/favicon.ico",
-            "largelogo": "ui/images/mc.png",
             "help": "ui/help/output-connector-help.html",
             "configUI": {
                 "html": "ui/output-connector-ui.html",

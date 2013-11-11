@@ -55,8 +55,6 @@
         "category": "database",
         "type": "InputConnector",
         "runtime": "com.foxweave.connector.rdb.input.RDBInputConnector",
-        "smalllogo": "ui/images/smalllogo.ico",
-        "largelogo": "ui/images/largelogo.png",
         "allowedTargets": ["PAAS", "ONPREMISE"],
         "supportsMigrate": true,
         "supportsManualTrigger": true,
@@ -91,8 +89,6 @@
         "category": "database",
         "type": "OutputConnector",
         "runtime": "com.foxweave.connector.rdb.output.RDBOutputConnector",
-        "smalllogo": "ui/images/smalllogo.ico",
-        "largelogo": "ui/images/largelogo.png",
         "help": "ui/help/output-connector-help.html",
         "embedDataMapper": false,
         "configUI": {

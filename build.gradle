@@ -1,3 +1,7 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+import org.codehaus.groovy.runtime.EncodingGroovyMethods
+
 project.ext.set("foxweaveVersion", '0.2-SNAPSHOT')
 project.ext.set("slf4jVersion", "1.6.4")
 
@@ -73,6 +77,8 @@ project.ext.set("foxweaveComponents", subprojects.findAll { project ->
     true
 })
 
+def imageMimeMappings = [png:"image/png", ico:"image/x-icon", gif:"image/gif", jpeg:"image/jpeg", jpeg:"image/jpeg"]
+
 configure(project.foxweaveComponents) {
     apply plugin: 'application'
 
@@ -125,9 +131,78 @@ configure(project.foxweaveComponents) {
         }
     }
 
-    task installComp(type : Copy, dependsOn: [distZip]) {
+    task embedImages {
+        def compInstallPath = new File(System.getProperty("user.home") + "/.foxweave/components/${projectDir.name}");
+        def componentJsonFile = new File(compInstallPath, "foxweave-components.json");
+
+        def b64EncodeImage = { imagePath ->
+            if (imagePath.startsWith("data:")) {
+                return null;
+            }
+
+            int fileExtIdx = imagePath.lastIndexOf('.');
+            if (fileExtIdx == -1) {
+                return null;
+            }
+
+            File imageFile = new File(compInstallPath, imagePath);
+            if (!imageFile.exists()) {
+                throw new IllegalStateException("Component image file '" + imageFile.getAbsolutePath() + "' does not exist.");
+            }
+
+            String imageFileExt = imagePath.substring(fileExtIdx + 1);
+            String imageMimeType = imageMimeMappings[imageFileExt];
+
+            if (imageMimeType == null) {
+                return null;
+            }
+
+            Writable writable = EncodingGroovyMethods.encodeBase64(imageFile.getBytes());
+            StringWriter writer = new StringWriter();
+            writable.writeTo(writer);
+            return "data:" + imageMimeType + ";base64," + writer.toString();
+        }
+        def translateImages = { configElement ->
+            if (configElement.smalllogo != null) {
+                def b64Image = b64EncodeImage(configElement.smalllogo);
+                if (b64Image != null) {
+                    configElement.smalllogo_b64 = b64Image;
+                }
+            }
+            if (configElement.largelogo != null) {
+                def b64Image = b64EncodeImage(configElement.largelogo);
+                if (b64Image != null) {
+                    configElement.largelogo_b64 = b64Image;
+                }
+            }
+        }
+
+        doLast {
+            if (componentJsonFile.exists()) {
+                def jsonSlurper = new JsonSlurper();
+                def parsedJson = jsonSlurper.parseText(componentJsonFile.getText("UTF-8"));
+
+                translateImages(parsedJson);
+                if (parsedJson.components != null) {
+                    for (component in parsedJson.components) {
+                        if (component.deprecated == null) {
+                            translateImages(component);
+                        }
+                    }
+                }
+
+                def jsonBuilder = new JsonBuilder(parsedJson);
+                componentJsonFile.setText(jsonBuilder.toPrettyString(), "UTF-8");
+            }
+        }
+    }
+
+    task copyComponents(type : Copy, dependsOn: [distZip]) {
         description = 'Installs the component to the local filestore (~/.foxweave/components)'
         from zipTree("${buildDir}/distributions/${applicationName}.zip")
         into file(System.getProperty("user.home") + "/.foxweave/components/${projectDir.name}")
+    }
+
+    task installComp(dependsOn: [copyComponents, embedImages]) {
     }
 }

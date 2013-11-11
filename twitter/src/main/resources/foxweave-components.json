@@ -99,8 +99,6 @@
             "category": "social",
             "runtime": "com.foxweave.connector.http.SaaSInputConnector",
             "poll_interval": 300000,
-            "smalllogo": "ui/images/favicon.ico",
-            "largelogo": "ui/images/largelogo.png",
             "help": "ui/help/input-connector-help.html",
             "allowedTargets": ["FOXWEAVE"],
             "supportsManualTrigger": true,
@@ -129,8 +127,6 @@
             "type": "OutputConnector",
             "category": "social",
             "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
-            "smalllogo": "ui/images/favicon.ico",
-            "largelogo": "ui/images/largelogo.png",
             "help": "ui/help/output-connector-help.html",
             "allowedTargets": ["FOXWEAVE"],
             "configUI": {

@@ -1,5 +1,6 @@
 package com.foxweave.connector.mixpanel;
 
+import com.foxweave.test.FoxWeaveTestCase;
 import com.foxweave.test.web.jetty.RequestResponse;
 import com.foxweave.test.web.jetty.SimpleServer;
 import com.mixpanel.mixpanelapi.MixpanelAPI;
@@ -11,7 +12,7 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-public class MixPanelOutputConnectorTest {
+public class MixPanelOutputConnectorTest extends FoxWeaveTestCase {
 
     private SimpleServer mockMixpanelServer;
 
@@ -33,6 +34,8 @@ public class MixPanelOutputConnectorTest {
                 return new MixpanelAPI(null, mockMixpanelServer.getServerURL() + "/engage");
             }
         };
+        mixPanelOutputConnector.setPipelineContext(getMockPipelineContext());
+
         mockMixpanelServer.addRequestResponse(new RequestResponse()
                 .setExpectedRequestURI(mockMixpanelServer.getServerURL() + "/engage")
                 .setExpectedRequestParam("data", "W3siJHRpbWUiOjEyNDU2MTM4ODUwMDAsIiRkaXN0aW5jdF9pZCI6IjUwNDc5YjI0NjcxYmYiLCIkc2V0Ijp7Ik5hbWUiOiJNYXJrIERvd25lcyIsIkVtYWlsIjoibWRAeC5jb20ifSwiJGlwIjoiMTI3LjAuMC4xIn1d")
@@ -53,6 +56,8 @@ public class MixPanelOutputConnectorTest {
                 return new MixpanelAPI(mockMixpanelServer.getServerURL() + "/track", null);
             }
         };
+        mixPanelOutputConnector.setPipelineContext(getMockPipelineContext());
+
         mockMixpanelServer.addRequestResponse(new RequestResponse()
                 .setExpectedRequestURI(mockMixpanelServer.getServerURL() + "/track?ip=0")
                 .setExpectedRequestParam("data", "W3siZXZlbnQiOiJnYW1lIiwicHJvcGVydGllcyI6eyJ0aW1lIjoxMjQ1NjEzODg1LCJkaXN0aW5jdF9pZCI6IjUwNDc5YjI0NjcxYmYiLCJ0b2tlbiI6ImUzYmM0MTAwMzMwYzM1NzIyNzQwZmI4YzZmNWFiZGRjIiwiYWN0aW9uIjoicGxheSIsIm1wX2xpYiI6ImpkayIsImlwIjoiMTIzLjEyMy4xMjMuMTIzIn19XQ==")
@@ -73,6 +78,8 @@ public class MixPanelOutputConnectorTest {
                 return new MixpanelAPI(null, mockMixpanelServer.getServerURL() + "/engage");
             }
         };
+        mixPanelOutputConnector.setPipelineContext(getMockPipelineContext());
+
         mockMixpanelServer.addRequestResponse(new RequestResponse()
                 .setExpectedRequestURI(mockMixpanelServer.getServerURL() + "/engage")
                 .setExpectedRequestParam("data", "W3siJHRpbWUiOjEyNDU2MTM4ODUwMDAsIiRkaXN0aW5jdF9pZCI6IjUwNDc5YjI0NjcxYmYiLCIkZGVsZXRlIjoiIn1d")

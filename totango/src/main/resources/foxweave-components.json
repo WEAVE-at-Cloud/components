@@ -73,8 +73,6 @@
             "type": "OutputConnector",
             "category": "customer_support",
             "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
-            "smalllogo": "ui/images/favicon.ico",
-            "largelogo": "ui/images/largelogo.png",
             "help": "ui/help/output-connector-help.html",
             "configUI": {
                 "html": "ui/output-connector-ui.html",
