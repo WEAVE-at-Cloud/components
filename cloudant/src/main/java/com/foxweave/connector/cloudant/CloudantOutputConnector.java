@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.foxweave.exception.FoxWeaveException;
 import com.foxweave.io.CharsetUtils;
 import com.foxweave.io.StreamUtils;
-import com.foxweave.pipeline.component.ComponentConfigurationException;
+import com.foxweave.exception.ComponentConfigurationException;
 import com.foxweave.pipeline.component.OutputConnector;
 import com.foxweave.pipeline.component.listener.ExchangeLifecycleListener;
 import com.foxweave.pipeline.exchange.Exchange;

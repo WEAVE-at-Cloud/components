@@ -3,7 +3,7 @@ package com.foxweave.connector.mixpanel;
 import com.foxweave.data.component.ConfigUtil;
 import com.foxweave.json.JSONUtil;
 import com.foxweave.pipeline.component.AbstractPipelineComponent;
-import com.foxweave.pipeline.component.ComponentConfigurationException;
+import com.foxweave.exception.ComponentConfigurationException;
 import com.foxweave.pipeline.component.OutputConnector;
 import com.foxweave.pipeline.exchange.Message;
 import com.foxweave.pipeline.lifecycle.Configurable;

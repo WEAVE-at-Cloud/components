@@ -7,8 +7,8 @@ package com.foxweave.connector.cloudant;
 
 import com.foxweave.codec.Base64Coder;
 import com.foxweave.data.component.ConfigUtil;
+import com.foxweave.exception.ComponentConfigurationException;
 import com.foxweave.pipeline.component.AbstractPipelineComponent;
-import com.foxweave.pipeline.component.ComponentConfigurationException;
 import com.foxweave.pipeline.lifecycle.Configurable;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.URI;

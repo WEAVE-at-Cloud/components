@@ -2,7 +2,7 @@ package com.foxweave.connector.cloudant;
 
 import com.foxweave.connector.cloudant.query.ChangeQueryHandler;
 import com.foxweave.connector.cloudant.query.ViewQueryHandler;
-import com.foxweave.pipeline.component.ComponentConfigurationException;
+import com.foxweave.exception.ComponentConfigurationException;
 import com.foxweave.pipeline.component.PollContext;
 import com.foxweave.pipeline.component.PollingInputConnector;
 import com.foxweave.pipeline.exchange.ExchangeFactory;
