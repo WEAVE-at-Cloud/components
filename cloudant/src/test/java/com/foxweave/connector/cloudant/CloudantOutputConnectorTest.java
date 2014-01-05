@@ -37,17 +37,17 @@ public class CloudantOutputConnectorTest extends FoxWeaveTestCase {
         cloudantServer.addRequestResponse(
                 new RequestResponse("Batch 1")
                         .setExpectedRequestBody(EXPECTED_BATCH_1)
-                        .setStatusCode(HttpURLConnection.HTTP_CREATED)
+                        .setResponseStatusCode(HttpURLConnection.HTTP_CREATED)
         );
         cloudantServer.addRequestResponse(
                 new RequestResponse("Batch 2")
                         .setExpectedRequestBody(EXPECTED_BATCH_2)
-                        .setStatusCode(HttpURLConnection.HTTP_CREATED)
+                        .setResponseStatusCode(HttpURLConnection.HTTP_CREATED)
         );
         cloudantServer.addRequestResponse(
                 new RequestResponse("Batch 3")
                         .setExpectedRequestBody(EXPECTED_BATCH_3)
-                        .setStatusCode(HttpURLConnection.HTTP_CREATED)
+                        .setResponseStatusCode(HttpURLConnection.HTTP_CREATED)
         );
 
         CloudantOutputConnector connector = new CloudantOutputConnector();

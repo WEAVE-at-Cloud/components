@@ -1,6 +1,6 @@
 package com.foxweave.zohocrm;
 
-import com.foxweave.json.JSONUtil;
+import com.foxweave.internal.util.JSONUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;

@@ -1,6 +1,6 @@
 package com.foxweave.onepagecrm;
 
-import com.foxweave.json.JSONUtil;
+import com.foxweave.internal.util.JSONUtil;
 import junit.framework.Assert;
 import org.json.JSONArray;
 import org.json.JSONException;

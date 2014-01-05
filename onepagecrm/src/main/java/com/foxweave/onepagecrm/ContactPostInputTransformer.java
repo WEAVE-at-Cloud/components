@@ -1,6 +1,6 @@
 package com.foxweave.onepagecrm;
 
-import com.foxweave.json.JSONUtil;
+import com.foxweave.internal.util.JSONUtil;
 import com.foxweave.pipeline.transform.PipelinePayloadTransformer;
 import org.json.JSONArray;
 import org.json.JSONException;
