@@ -1,4 +1,5 @@
 {
+    "apiDocs": "http://jdbc.postgresql.org/documentation/head/connect.html",
     "displayName": "PostgreSQL",
     "smalllogo": "ui/images/smalllogo.ico",
     "largelogo": "ui/images/largelogo.jpg",
@@ -25,17 +26,30 @@
             "username": {
                 "displayIndex": 4,
                 "label" : "Username",
+                "connectionProp": "user",
                 "hint": "PostgresSQL Host Account Username."
             },
             "password": {
                 "displayIndex": 5,
                 "label" : "Password",
+                "connectionProp": "password",
                 "type": "password",
                 "hint": "PostgresSQL Host Account Password.",
                 "required": false
             },
-            "driver": {
+            "ssl": {
                 "displayIndex": 6,
+                "label" : "Use SSL",
+                "connectionProp": "ssl",
+                "hint": "Connect to PostgresSQL using SSL.",
+                "options": [
+                    {"value": false, "label": "No"},
+                    {"value": true, "label": "Yes"}
+                ],
+                "required": false
+            },
+            "driver": {
+                "displayIndex": 7,
                 "type": "hidden",
                 "value": "org.postgresql.Driver"
             }
