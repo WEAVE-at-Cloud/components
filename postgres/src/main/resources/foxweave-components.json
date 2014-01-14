@@ -37,10 +37,9 @@
                 "hint": "PostgresSQL Host Account Password.",
                 "required": false
             },
-            "ssl": {
+            "ssltoggle": {
                 "displayIndex": 6,
                 "label" : "Use SSL",
-                "connectionProp": "ssl",
                 "hint": "Connect to PostgresSQL using SSL.",
                 "options": [
                     {"value": false, "label": "No"},
@@ -52,6 +51,18 @@
                 "displayIndex": 7,
                 "type": "hidden",
                 "value": "org.postgresql.Driver"
+            },
+            "ssl": {
+                "displayIndex": 8,
+                "type": "hidden",
+                "connectionProp": "ssl",
+                "required": false
+            },
+            "sslfactory": {
+                "displayIndex": 9,
+                "type": "hidden",
+                "connectionProp": "sslfactory",
+                "required": false
             }
         }
     },
