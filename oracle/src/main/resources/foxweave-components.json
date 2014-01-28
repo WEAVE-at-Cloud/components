@@ -59,6 +59,13 @@
         "supportsMigrate": true,
         "supportsManualTrigger": true,
         "help": "ui/help/input-connector-help.html",
+        "statementBuilder": {
+            "runtime": "com.foxweave.connector.rdb.SQL92StatementBuilder"
+        },
+        "syncCache" : {
+            "hashAsKey": true,
+            "stopExchangeOnAlreadySyncd": false
+        },
         "configUI": {
             "html": "ui/connector-ui.html",
             "viewJs": "ui/connector.js"
@@ -91,7 +98,10 @@
         "type": "OutputConnector",
         "runtime": "com.foxweave.connector.rdb.output.RDBOutputConnector",
         "help": "ui/help/output-connector-help.html",
-        "embedDataMapper": false,
+        "supportsUpdate": true,
+        "statementBuilder": {
+            "runtime": "com.foxweave.connector.rdb.SQL92StatementBuilder"
+        },
         "configUI": {
             "html": "ui/connector-ui.html",
             "viewJs": "ui/connector.js"

@@ -3,20 +3,9 @@ Oracle is a very popular Relational Database. <a href="http://www.foxweave.com/a
 Configuring the Oracle output connector is quite simple:
 <ol>
     <li>Select the <strong>Oracle Server</strong> (press the <img src="/images/add.png"/> button to add an account, if needed).</li>
-    <li>Enter the insert/update <strong>SQL Statement</strong>.  Auto-complete of the statement value field mappings is supported.  See <strong>Tip</strong> below.</li>
+    <li>Enter the name of the <strong>Table</strong> to which you wish to synchronize data.</li>
+    <li>Enter the Table column names, as well as the type information for each column.  This should match the definition
+        from the database itself.</li>
+    <li>Go to the <strong>Add / Update</strong> tab and configure how you would like the data to be added to the table.</li>
+    <li>Go to the <strong>Data Mapping</strong> tab and configure the data mappings.</li>
 </ol>
-
-<div class="alert alert-info">
-    <strong>Tip:</strong> When creating a <strong>Oracle Server</strong> (after pressing the <img src="/images/add.png"/> button),
-    do NOT enter a local loopback address ("localhost" or "127.0.0.1") as the Oracle Server <strong>Host</strong> name/IP.  Remember that this Oracle Server <strong>Host</strong>
-    address needs to be resolvable on the FoxWeave target on which you chose to start/run the integration i.e. on an
-    <a href="http://www.cloudbees.com/platform/services/integrate/integration-runtime-options">On-Premise or On-PaaS</a> host machine.
-</div>
-<div class="alert alert-info">
-    <strong>Tip:</strong> When entering the values field tokens in the <strong>SQL Statement</strong> (step #3), use the '<i style="color: #e9322d"><strong>Ctrl+Enter</strong></i>' keyboard shortcut to
-    auto-complete the statement value field mappings i.e. the '#&lt;<i>in-field-name</i>&gt;' tokens as seen in the following example:
-    <p/>
-    <code>insert into subscriptions (id, firstn, lastn, eaddress) values (#id, #fname, #lname, #email)</code>
-    <p/>
-    Note that the cursor needs to be active in the <strong>SQL Statement</strong> textarea.  You can also press the right arrow button <span class="add-on btn" data-original-title=""><i class="icon-arrow-right"></i></span> to activate the auto-completions.
-</div>

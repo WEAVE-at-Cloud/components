@@ -3,7 +3,7 @@ import groovy.json.JsonSlurper
 import org.codehaus.groovy.runtime.EncodingGroovyMethods
 
 project.ext.set("foxweaveVersion", '0.2-SNAPSHOT')
-project.ext.set("slf4jVersion", "1.6.4")
+project.ext.set("slf4jVersion", "1.7.5")
 
 apply plugin: 'eclipse'
 apply plugin: 'idea'
