@@ -6,6 +6,7 @@ import com.foxweave.exception.ComponentConfigurationException;
 import com.foxweave.pipeline.component.PollContext;
 import com.foxweave.pipeline.component.PollingInputConnector;
 import com.foxweave.pipeline.exchange.ExchangeFactory;
+import com.foxweave.pipeline.exchange.Message;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -64,6 +65,10 @@ public class CloudantInputConnector extends AbstractCloudantConnector implements
     @Override
     public void setExchangeFactory(ExchangeFactory exchangeFactory) {
         this.exchangeFactory = exchangeFactory;
+    }
+
+    @Override
+    public void replay(Message message) throws Exception {
     }
 
     @Override
