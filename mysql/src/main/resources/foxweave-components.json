@@ -50,7 +50,7 @@
         "category": "database",
         "type": "InputConnector",
         "runtime": "com.foxweave.connector.rdb.input.RDBInputConnector",
-        "allowedTargets": ["PAAS", "ONPREMISE"],
+        "allowedTargets": ["PAAS", "ONPREMISE", "RUNATCLOUD"],
         "supportsMigrate": true,
         "supportsManualTrigger": true,
         "help": "ui/help/input-connector-help.html",
