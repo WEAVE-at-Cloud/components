@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.foxweave.exception.FoxWeaveException;
 import com.foxweave.exception.ComponentConfigurationException;
+import com.foxweave.http.HttpUtil;
 import com.foxweave.internal.util.CharsetUtils;
 import com.foxweave.internal.util.StreamUtils;
 import com.foxweave.pipeline.component.OutputConnector;
@@ -154,7 +155,7 @@ public class CloudantOutputConnector extends AbstractCloudantConnector implement
             postMethod.setURI(requestURI);
             postMethod.setRequestHeader("Authorization", "Basic " + encodedAuthCredentials);
             postMethod.setRequestEntity(requestEntity);
-            httpClient.executeMethod(postMethod);
+            HttpUtil.getHttpClient().executeMethod(postMethod);
 
             logger.debug("Sending batch of documents to ");
             if (postMethod.getStatusCode() >= 200 && postMethod.getStatusCode() < 300) {

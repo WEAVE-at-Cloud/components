@@ -3,6 +3,7 @@ package com.foxweave.connector.cloudant.query;
 import com.foxweave.connector.cloudant.CloudantInputConnector;
 import com.foxweave.connector.cloudant.InputQueryHandler;
 import com.foxweave.exception.FoxWeaveException;
+import com.foxweave.http.HttpUtil;
 import com.foxweave.internal.util.ExchangeUtil;
 import com.foxweave.internal.util.StreamUtils;
 import com.foxweave.json.streaming.JSONObjectCallback;
@@ -62,7 +63,7 @@ public class ChangeQueryHandler implements InputQueryHandler {
             if (logger.isDebugEnabled()) {
                 logger.debug("Executing Cloudant _changes poll: {}", method.getURI());
             }
-            if (cloudantInputConnector.httpClient.executeMethod(method) == 200) {
+            if (HttpUtil.getHttpClient().executeMethod(method) == 200) {
                 InputStream dataStream = method.getResponseBodyAsStream();
 
                 if (dataStream != null) {
@@ -110,7 +111,7 @@ public class ChangeQueryHandler implements InputQueryHandler {
 
         method.setQueryString(queryParams);
         method.setRequestHeader("Authorization", "Basic " + cloudantInputConnector.encodedAuthCredentials);
-        if (cloudantInputConnector.httpClient.executeMethod(method) == 200) {
+        if (HttpUtil.getHttpClient().executeMethod(method) == 200) {
             JSONObject responseJSON = new JSONObject(method.getResponseBodyAsString());
             storeLastSequenceId(responseJSON.getString("last_seq"));
         }

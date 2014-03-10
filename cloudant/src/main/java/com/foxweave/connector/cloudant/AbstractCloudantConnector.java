@@ -10,7 +10,6 @@ import com.foxweave.data.component.ConfigUtil;
 import com.foxweave.exception.ComponentConfigurationException;
 import com.foxweave.pipeline.component.AbstractPipelineComponent;
 import com.foxweave.pipeline.lifecycle.Configurable;
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
 import org.json.JSONObject;
@@ -23,7 +22,6 @@ public abstract class AbstractCloudantConnector extends AbstractPipelineComponen
     public static final String PASSWORD = "password";
 
     public JSONObject config;
-    public HttpClient httpClient = new HttpClient();
     public URI requestURI;
     public String encodedAuthCredentials;
 
