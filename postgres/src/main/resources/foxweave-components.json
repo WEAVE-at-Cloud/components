@@ -78,6 +78,7 @@
         "supportsMigrate": true,
         "supportsManualTrigger": true,
         "help": "ui/help/input-connector-help.html",
+        "video": { "src": "https://www.youtube.com/embed/oFAsP7emeqI?rel=0", "width": 640, "height": 480 },
         "statementBuilder": {
             "runtime": "com.foxweave.connector.rdb.SQL92StatementBuilder"
         },
@@ -116,6 +117,7 @@
         "type": "OutputConnector",
         "runtime": "com.foxweave.connector.rdb.output.RDBOutputConnector",
         "help": "ui/help/output-connector-help.html",
+        "video": { "src": "https://www.youtube.com/embed/oFAsP7emeqI?rel=0", "width": 640, "height": 480 },
         "supportsUpdate": true,
         "statementBuilder": {
             "runtime": "com.foxweave.connector.rdb.SQL92StatementBuilder"
