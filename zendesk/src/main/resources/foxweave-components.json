@@ -283,6 +283,7 @@
             "category": "customer_support",
             "runtime": "com.foxweave.connector.http.SaaSOutputConnector",
             "help": "ui/help/output-connector-help.html",
+            "video": { "src": "https://www.youtube.com/embed/x9I4wSNXjt8?rel=0", "width": 420, "height": 315 },
             "configUI": {
                 "html": "ui/connector-ui.html",
                 "viewJs": "ui/connector.js"
